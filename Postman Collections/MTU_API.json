@@ -1,0 +1,2035 @@
+{
+	"info": {
+		"_postman_id": "c96c3fbe-5384-4c75-bea0-404306370f48",
+		"name": "MTU API",
+		"description": "**MTU API** provides endpoints to perform MTU transaction. Typical flow consists of calling 3 endpoints:\n\n*/config* to get suggested countries and information about recent transactions,\n*/offers* to get available offers and\n*/mtu* to execute the actual transaction.\n\nDue to asynchronous nature of MTU transaction execution, the actual result is delivered to client via push\nnotifications, MQTT and APNS/FCM. The content field inside the message attachment is of type **Transaction**.\n\nAttachment content type value for the MTU case is **x-idtm/json;type=imtu-event-v2**.\n\nClients will typically check the **status** field value inside **Transaction** struct to decide whether transaction\nsucceed of failed. Possible **status** field values are:\n\n- success - purchase ok\n- failed - purchase failed\n- queued - 3DS pending, or fulfillment queued on the provider side\n- scheduled - purchase scheduled in the future\n\nWhen the status is **queued**, the clients should the 3DS flow should be triggered. In this case the **error_reason** will be **cvv_pending**.\n\n\nWhen the status is **failed**, the clients should check the **error_reason** to determine the exact cause. The default\nerror reason is **failed**.\n\nPayment errors:\n\n- limit_exceeded\n- failed_card_declined\n- failed_card_expired\n- failed_no_credit\n- failed_lost_or_stolen_cc\n- failed_card_restricted\n- failed_invalid_card_info\n- failed_invalid_card_number\n- missing_card\n- cvv_required\n- 3ds_pending\n- 3ds_required\n- 3ds_failed\n\nPurchase errors:\n\n- topup_too_soon\n- topup_limit_reached\n- invalid_msisdn\n- invalid_msisdn_or_wrong_carrier\n- msisdn_not_active\n- msisdn_not_prepaid\n- invalid_product\n- missing_product\n- carrier_problem_contact_carrier\n- invalid_account_type\n\nJVM purchase errors:\n\n- unknown\n- invalid_recharge_amount_contact_carrier\n- product_unavailable\n- verify_with_recipient\n- ineligible_plan\n- carrier_problem_try_again\n- product_price_changed",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "config",
+					"item": [
+						{
+							"name": "Get MTU configuration",
+							"id": "8782af95-d014-44f4-96e7-000a0d3e0ed9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "sd",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/config?product_type=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"config"
+									],
+									"query": [
+										{
+											"key": "product_type",
+											"value": "<string>",
+											"description": "mtu or voucher, nil for mtu"
+										}
+									]
+								},
+								"description": "Get MTU configuration, including history of MTU transactions and list of suggested countries."
+							},
+							"response": [
+								{
+									"id": "11c2c37e-0caf-4406-9f48-d81cfc0c7277",
+									"name": "List of past MTU transactions and list of suggested countries",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/config?product_type=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"config"
+											],
+											"query": [
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"country_codes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"legal_content_url\": \"<string>\",\n  \"product_type\": \"<string>\",\n  \"recent_contacts\": [\n    {\n      \"carrier_code\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"timestamp\": {},\n      \"available_carrier_promo_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"carrier_code\": \"<string>\",\n      \"country_code\": \"<string>\",\n      \"msisdn\": \"<string>\",\n      \"timestamp\": {},\n      \"available_carrier_promo_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"recent_topups\": [\n    {\n      \"offer_id\": \"<string>\",\n      \"purchase_status\": \"<string>\",\n      \"recipient_msisdn\": \"<string>\",\n      \"request_type\": \"<string>\",\n      \"authorized_at\": \"<integer>\",\n      \"available_carrier_promo_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"available_carrier_promos\": [\n        {\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        }\n      ],\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\"\n      },\n      \"delivery_info\": \"<string>\",\n      \"error_reason\": \"<string>\",\n      \"handle_id\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_image_url\": \"<string>\",\n      \"pricing_information\": {\n        \"base_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"discount\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"discounted_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"fees\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"original_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"product_subtype\": \"<string>\",\n      \"product_type\": \"<string>\",\n      \"promo\": {\n        \"description\": \"<string>\",\n        \"id\": \"<string>\",\n        \"loyalty_promo\": {\n          \"activation_code\": \"<string>\",\n          \"automatic_promo_description\": \"<string>\",\n          \"participation_id\": \"<string>\",\n          \"ready\": \"<boolean>\",\n          \"reservation_code\": \"<string>\",\n          \"static_promo_description\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"title\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"purchase_completed_at\": \"<integer>\",\n      \"purchase_started_at\": \"<integer>\",\n      \"receipt\": {\n        \"cillumd5b\": \"<string>\",\n        \"aute81\": \"<string>\"\n      },\n      \"recipient_country\": \"<string>\",\n      \"redirect_url\": \"<string>\",\n      \"refundable\": \"<boolean>\",\n      \"refunded_at\": \"<integer>\",\n      \"repeat_info\": {\n        \"launch_at\": \"<integer>\",\n        \"recurrent_interval\": \"<integer>\",\n        \"recurrent_unit\": \"<integer>\",\n        \"reminder_interval\": \"<integer>\",\n        \"reminder_timer_id\": \"<string>\",\n        \"reminder_unit\": \"<integer>\",\n        \"timer_id\": \"<string>\",\n        \"timer_status\": \"<string>\"\n      },\n      \"store_purchase_id\": \"<string>\",\n      \"txid\": \"<string>\"\n    },\n    {\n      \"offer_id\": \"<string>\",\n      \"purchase_status\": \"<string>\",\n      \"recipient_msisdn\": \"<string>\",\n      \"request_type\": \"<string>\",\n      \"authorized_at\": \"<integer>\",\n      \"available_carrier_promo_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"available_carrier_promos\": [\n        {\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        }\n      ],\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\"\n      },\n      \"delivery_info\": \"<string>\",\n      \"error_reason\": \"<string>\",\n      \"handle_id\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_image_url\": \"<string>\",\n      \"pricing_information\": {\n        \"base_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"discount\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"discounted_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"fees\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"original_price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"price\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"product_subtype\": \"<string>\",\n      \"product_type\": \"<string>\",\n      \"promo\": {\n        \"description\": \"<string>\",\n        \"id\": \"<string>\",\n        \"loyalty_promo\": {\n          \"activation_code\": \"<string>\",\n          \"automatic_promo_description\": \"<string>\",\n          \"participation_id\": \"<string>\",\n          \"ready\": \"<boolean>\",\n          \"reservation_code\": \"<string>\",\n          \"static_promo_description\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"title\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"purchase_completed_at\": \"<integer>\",\n      \"purchase_started_at\": \"<integer>\",\n      \"receipt\": {\n        \"irure22\": \"<string>\",\n        \"et2f\": \"<string>\",\n        \"deserunt1\": \"<string>\",\n        \"ea_bda\": \"<string>\"\n      },\n      \"recipient_country\": \"<string>\",\n      \"redirect_url\": \"<string>\",\n      \"refundable\": \"<boolean>\",\n      \"refunded_at\": \"<integer>\",\n      \"repeat_info\": {\n        \"launch_at\": \"<integer>\",\n        \"recurrent_interval\": \"<integer>\",\n        \"recurrent_unit\": \"<integer>\",\n        \"reminder_interval\": \"<integer>\",\n        \"reminder_timer_id\": \"<string>\",\n        \"reminder_unit\": \"<integer>\",\n        \"timer_id\": \"<string>\",\n        \"timer_status\": \"<string>\"\n      },\n      \"store_purchase_id\": \"<string>\",\n      \"txid\": \"<string>\"\n    }\n  ]\n}"
+								},
+								{
+									"id": "cb653a5f-4f98-4e2d-a08e-b3e87bbf9174",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/config?product_type=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"config"
+											],
+											"query": [
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "ed2e5bec-43fe-4e71-b9d4-72d609ec1d6e",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/config?product_type=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"config"
+											],
+											"query": [
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								}
+							]
+						}
+					],
+					"id": "36fc1dca-41bd-43a8-8a5e-012e74aa8a5a"
+				},
+				{
+					"name": "mtu",
+					"item": [
+						{
+							"name": "Do MTU",
+							"id": "cc39e69b-f6d7-48e4-87de-080ae063052d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"handle_id\": \"<string>\",\n  \"offer_id\": \"<string>\",\n  \"offer_price_in_cents\": \"<integer>\",\n  \"recipient_msisdn\": \"<string>\",\n  \"cvv\": \"<integer>\",\n  \"extra_fields\": {\n    \"billing_account_id\": \"<string>\",\n    \"billing_invoice_number\": \"<string>\",\n    \"delivery_challenge_answer\": \"<string>\",\n    \"delivery_challenge_question\": \"<string>\",\n    \"delivery_date\": \"<string>\",\n    \"delivery_message\": \"<string>\",\n    \"recipient_email\": \"<string>\",\n    \"recipient_first_name\": \"<string>\",\n    \"recipient_last_name\": \"<string>\",\n    \"recipient_msisdn\": \"<string>\",\n    \"sender_first_name\": \"<string>\",\n    \"sender_last_name\": \"<string>\"\n  },\n  \"installation_id\": \"<string>\",\n  \"launch_at\": \"<integer>\",\n  \"offer_required_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orig_recipient_number\": \"<string>\",\n  \"recurrent_interval\": \"<integer>\",\n  \"recurrent_unit\": \"<integer>\",\n  \"reminder_interval\": \"<integer>\",\n  \"reminder_unit\": \"<integer>\",\n  \"request_id\": \"<integer>\",\n  \"return_url\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/v1/mtu",
+								"description": "Execute MTU transaction. While MTU transaction consists of several steps, this endpoint returns result of the very initial step only -\nposting transaction authorization request. Actual authorization and fulfillment operations will be executed in asynchronous way\nand result will be delivered to the client via Push Notification channel."
+							},
+							"response": [
+								{
+									"id": "1fa58aa6-bfad-4bec-81f0-165cbd9ec165",
+									"name": "Transaction authorization request posted successfully",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"handle_id\": \"<string>\",\n  \"offer_id\": \"<string>\",\n  \"offer_price_in_cents\": \"<integer>\",\n  \"recipient_msisdn\": \"<string>\",\n  \"cvv\": \"<integer>\",\n  \"extra_fields\": {\n    \"billing_account_id\": \"<string>\",\n    \"billing_invoice_number\": \"<string>\",\n    \"delivery_challenge_answer\": \"<string>\",\n    \"delivery_challenge_question\": \"<string>\",\n    \"delivery_date\": \"<string>\",\n    \"delivery_message\": \"<string>\",\n    \"recipient_email\": \"<string>\",\n    \"recipient_first_name\": \"<string>\",\n    \"recipient_last_name\": \"<string>\",\n    \"recipient_msisdn\": \"<string>\",\n    \"sender_first_name\": \"<string>\",\n    \"sender_last_name\": \"<string>\"\n  },\n  \"installation_id\": \"<string>\",\n  \"launch_at\": \"<integer>\",\n  \"offer_required_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orig_recipient_number\": \"<string>\",\n  \"recurrent_interval\": \"<integer>\",\n  \"recurrent_unit\": \"<integer>\",\n  \"reminder_interval\": \"<integer>\",\n  \"reminder_unit\": \"<integer>\",\n  \"request_id\": \"<integer>\",\n  \"return_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/v1/mtu"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"request_id\": \"<integer>\"\n}"
+								},
+								{
+									"id": "686c825f-a616-439f-a9ba-10df5a3280cf",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"handle_id\": \"<string>\",\n  \"offer_id\": \"<string>\",\n  \"offer_price_in_cents\": \"<integer>\",\n  \"recipient_msisdn\": \"<string>\",\n  \"cvv\": \"<integer>\",\n  \"extra_fields\": {\n    \"billing_account_id\": \"<string>\",\n    \"billing_invoice_number\": \"<string>\",\n    \"delivery_challenge_answer\": \"<string>\",\n    \"delivery_challenge_question\": \"<string>\",\n    \"delivery_date\": \"<string>\",\n    \"delivery_message\": \"<string>\",\n    \"recipient_email\": \"<string>\",\n    \"recipient_first_name\": \"<string>\",\n    \"recipient_last_name\": \"<string>\",\n    \"recipient_msisdn\": \"<string>\",\n    \"sender_first_name\": \"<string>\",\n    \"sender_last_name\": \"<string>\"\n  },\n  \"installation_id\": \"<string>\",\n  \"launch_at\": \"<integer>\",\n  \"offer_required_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orig_recipient_number\": \"<string>\",\n  \"recurrent_interval\": \"<integer>\",\n  \"recurrent_unit\": \"<integer>\",\n  \"reminder_interval\": \"<integer>\",\n  \"reminder_unit\": \"<integer>\",\n  \"request_id\": \"<integer>\",\n  \"return_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/v1/mtu"
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "39480a65-8558-4a0b-b540-13f1de650633",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"handle_id\": \"<string>\",\n  \"offer_id\": \"<string>\",\n  \"offer_price_in_cents\": \"<integer>\",\n  \"recipient_msisdn\": \"<string>\",\n  \"cvv\": \"<integer>\",\n  \"extra_fields\": {\n    \"billing_account_id\": \"<string>\",\n    \"billing_invoice_number\": \"<string>\",\n    \"delivery_challenge_answer\": \"<string>\",\n    \"delivery_challenge_question\": \"<string>\",\n    \"delivery_date\": \"<string>\",\n    \"delivery_message\": \"<string>\",\n    \"recipient_email\": \"<string>\",\n    \"recipient_first_name\": \"<string>\",\n    \"recipient_last_name\": \"<string>\",\n    \"recipient_msisdn\": \"<string>\",\n    \"sender_first_name\": \"<string>\",\n    \"sender_last_name\": \"<string>\"\n  },\n  \"installation_id\": \"<string>\",\n  \"launch_at\": \"<integer>\",\n  \"offer_required_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orig_recipient_number\": \"<string>\",\n  \"recurrent_interval\": \"<integer>\",\n  \"recurrent_unit\": \"<integer>\",\n  \"reminder_interval\": \"<integer>\",\n  \"reminder_unit\": \"<integer>\",\n  \"request_id\": \"<integer>\",\n  \"return_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/v1/mtu"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								},
+								{
+									"id": "639698ad-9591-40bf-8e00-e219884d875d",
+									"name": "Too soon topup attempt",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"handle_id\": \"<string>\",\n  \"offer_id\": \"<string>\",\n  \"offer_price_in_cents\": \"<integer>\",\n  \"recipient_msisdn\": \"<string>\",\n  \"cvv\": \"<integer>\",\n  \"extra_fields\": {\n    \"billing_account_id\": \"<string>\",\n    \"billing_invoice_number\": \"<string>\",\n    \"delivery_challenge_answer\": \"<string>\",\n    \"delivery_challenge_question\": \"<string>\",\n    \"delivery_date\": \"<string>\",\n    \"delivery_message\": \"<string>\",\n    \"recipient_email\": \"<string>\",\n    \"recipient_first_name\": \"<string>\",\n    \"recipient_last_name\": \"<string>\",\n    \"recipient_msisdn\": \"<string>\",\n    \"sender_first_name\": \"<string>\",\n    \"sender_last_name\": \"<string>\"\n  },\n  \"installation_id\": \"<string>\",\n  \"launch_at\": \"<integer>\",\n  \"offer_required_fields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orig_recipient_number\": \"<string>\",\n  \"recurrent_interval\": \"<integer>\",\n  \"recurrent_unit\": \"<integer>\",\n  \"reminder_interval\": \"<integer>\",\n  \"reminder_unit\": \"<integer>\",\n  \"request_id\": \"<integer>\",\n  \"return_url\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{baseUrl}}/v1/mtu"
+									},
+									"status": "Unordered Collection (RFC 3648)",
+									"code": 425,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								}
+							]
+						}
+					],
+					"id": "200f63a8-f4a8-46c7-b33a-1a431b90ead7"
+				},
+				{
+					"name": "offers",
+					"item": [
+						{
+							"name": "countries",
+							"item": [
+								{
+									"name": "Get supported destination countries",
+									"id": "87184ea1-1feb-471b-923b-b0f84309e5ad",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/offers/countries?user_country=<string>&application_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"offers",
+												"countries"
+											],
+											"query": [
+												{
+													"key": "user_country",
+													"value": "<string>",
+													"description": "(Required) User country, e.g. US"
+												},
+												{
+													"key": "application_id",
+													"value": "<string>",
+													"description": "(Required) Application ID, e.g. 123456"
+												}
+											]
+										},
+										"description": "Get supported destination countries - does not require session."
+									},
+									"response": [
+										{
+											"id": "0c790868-ffcf-416a-8303-df65152b0e2d",
+											"name": "List of supported destination countries",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/offers/countries?user_country=<string>&application_id=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"offers",
+														"countries"
+													],
+													"query": [
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"countries\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+										},
+										{
+											"id": "df3f1056-8a0a-41d0-b7eb-7d65f1be99a2",
+											"name": "Missing or invalid required params",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/offers/countries?user_country=<string>&application_id=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"offers",
+														"countries"
+													],
+													"query": [
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+										}
+									]
+								}
+							],
+							"id": "9ff14d37-9abf-4186-979f-65d892804422"
+						},
+						{
+							"name": "search",
+							"item": [
+								{
+									"name": "Search offers",
+									"id": "fdf41673-2101-40a7-95ae-0d56cdd0a430",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/offers/search?application_id=<string>&recipient_msisdn=<string>&destination_country=<string>&carrier_code=<string>&user_country=<string>&language=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"offers",
+												"search"
+											],
+											"query": [
+												{
+													"key": "application_id",
+													"value": "<string>",
+													"description": "(Required) Application ID, e.g. 123456"
+												},
+												{
+													"key": "recipient_msisdn",
+													"value": "<string>",
+													"description": "Recipient msisdn is required without destination country"
+												},
+												{
+													"key": "destination_country",
+													"value": "<string>",
+													"description": "Destination country is required without recipient msisdn, e.g. GT"
+												},
+												{
+													"key": "carrier_code",
+													"value": "<string>",
+													"description": "Carrier code, e.g. tmobile"
+												},
+												{
+													"key": "user_country",
+													"value": "<string>",
+													"description": "(Required) User country, e.g. US"
+												},
+												{
+													"key": "language",
+													"value": "<string>",
+													"description": "Language for offers, supported languages are en, de, es, or fr; default is en"
+												}
+											]
+										},
+										"description": "Search offers - does not require session."
+									},
+									"response": [
+										{
+											"id": "9890ec0e-6bbb-4dfb-80d3-212f0c750b6c",
+											"name": "List of available offers",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/offers/search?application_id=<string>&recipient_msisdn=<string>&destination_country=<string>&carrier_code=<string>&user_country=<string>&language=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"offers",
+														"search"
+													],
+													"query": [
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														},
+														{
+															"description": "Recipient msisdn is required without destination country",
+															"key": "recipient_msisdn",
+															"value": "<string>"
+														},
+														{
+															"description": "Destination country is required without recipient msisdn, e.g. GT",
+															"key": "destination_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Carrier code, e.g. tmobile",
+															"key": "carrier_code",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Language for offers, supported languages are en, de, es, or fr; default is en",
+															"key": "language",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"offers\": [\n    {\n      \"benefits\": {\n        \"data\": \"<number>\",\n        \"data_unlimited\": \"<boolean>\",\n        \"minutes\": \"<integer>\",\n        \"minutes_unlimited\": \"<boolean>\",\n        \"plan_term\": \"<integer>\",\n        \"sms\": \"<integer>\",\n        \"sms_unlimited\": \"<boolean>\"\n      },\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"country\": \"<string>\",\n        \"country_name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"image_type\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"locale\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"offer_ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"product_sub_types\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\",\n        \"updated_at\": \"<integer>\",\n        \"version\": \"<string>\"\n      },\n      \"destination_country\": \"<string>\",\n      \"fraud_rules\": {\n        \"cvv_always_required\": \"<boolean>\",\n        \"cvv_required_max_limit\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"image_url\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_id\": \"<string>\",\n      \"price\": {\n        \"base_price\": \"<string>\",\n        \"currency\": \"<string>\",\n        \"idt_service_fee\": \"<string>\",\n        \"idt_service_fee_pct\": \"<number>\",\n        \"max\": \"<string>\",\n        \"min\": \"<string>\",\n        \"price\": \"<string>\",\n        \"price_type\": \"<string>\",\n        \"step\": \"<string>\",\n        \"value\": {\n          \"currency\": \"<string>\",\n          \"fx_factor\": \"<number>\",\n          \"value\": \"<string>\"\n        }\n      },\n      \"priority\": \"<integer>\",\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"sub_type\": \"<string>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"benefits\": {\n        \"data\": \"<number>\",\n        \"data_unlimited\": \"<boolean>\",\n        \"minutes\": \"<integer>\",\n        \"minutes_unlimited\": \"<boolean>\",\n        \"plan_term\": \"<integer>\",\n        \"sms\": \"<integer>\",\n        \"sms_unlimited\": \"<boolean>\"\n      },\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"country\": \"<string>\",\n        \"country_name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"image_type\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"locale\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"offer_ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"product_sub_types\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\",\n        \"updated_at\": \"<integer>\",\n        \"version\": \"<string>\"\n      },\n      \"destination_country\": \"<string>\",\n      \"fraud_rules\": {\n        \"cvv_always_required\": \"<boolean>\",\n        \"cvv_required_max_limit\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"image_url\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_id\": \"<string>\",\n      \"price\": {\n        \"base_price\": \"<string>\",\n        \"currency\": \"<string>\",\n        \"idt_service_fee\": \"<string>\",\n        \"idt_service_fee_pct\": \"<number>\",\n        \"max\": \"<string>\",\n        \"min\": \"<string>\",\n        \"price\": \"<string>\",\n        \"price_type\": \"<string>\",\n        \"step\": \"<string>\",\n        \"value\": {\n          \"currency\": \"<string>\",\n          \"fx_factor\": \"<number>\",\n          \"value\": \"<string>\"\n        }\n      },\n      \"priority\": \"<integer>\",\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"sub_type\": \"<string>\",\n      \"version\": \"<string>\"\n    }\n  ]\n}"
+										},
+										{
+											"id": "7a5fff5e-4d30-4c12-a060-96a8ec654bd2",
+											"name": "Missing or invalid required params",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/offers/search?application_id=<string>&recipient_msisdn=<string>&destination_country=<string>&carrier_code=<string>&user_country=<string>&language=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"offers",
+														"search"
+													],
+													"query": [
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														},
+														{
+															"description": "Recipient msisdn is required without destination country",
+															"key": "recipient_msisdn",
+															"value": "<string>"
+														},
+														{
+															"description": "Destination country is required without recipient msisdn, e.g. GT",
+															"key": "destination_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Carrier code, e.g. tmobile",
+															"key": "carrier_code",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Language for offers, supported languages are en, de, es, or fr; default is en",
+															"key": "language",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+										}
+									]
+								}
+							],
+							"id": "d420a296-d5a4-430f-82b2-0ed0cf550f9e"
+						},
+						{
+							"name": "Get offers",
+							"id": "490a965e-3a56-42fb-86a5-35cbfb5c2733",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/offers?recipient_msisdn=<string>&carrier_code=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"offers"
+									],
+									"query": [
+										{
+											"key": "recipient_msisdn",
+											"value": "<string>",
+											"description": "(Required) Recipient msisdn"
+										},
+										{
+											"key": "carrier_code",
+											"value": "<string>",
+											"description": "Carrier code"
+										}
+									]
+								},
+								"description": "Get available offers"
+							},
+							"response": [
+								{
+									"id": "3c8fd124-c2de-4b0f-aa66-c2a3db9b5286",
+									"name": "List of available offers",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/offers?recipient_msisdn=<string>&carrier_code=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"offers"
+											],
+											"query": [
+												{
+													"description": "(Required) Recipient msisdn",
+													"key": "recipient_msisdn",
+													"value": "<string>"
+												},
+												{
+													"description": "Carrier code",
+													"key": "carrier_code",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"offers\": [\n    {\n      \"benefits\": {\n        \"data\": \"<number>\",\n        \"data_unlimited\": \"<boolean>\",\n        \"minutes\": \"<integer>\",\n        \"minutes_unlimited\": \"<boolean>\",\n        \"plan_term\": \"<integer>\",\n        \"sms\": \"<integer>\",\n        \"sms_unlimited\": \"<boolean>\"\n      },\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"country\": \"<string>\",\n        \"country_name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"image_type\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"locale\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"offer_ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"product_sub_types\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\",\n        \"updated_at\": \"<integer>\",\n        \"version\": \"<string>\"\n      },\n      \"destination_country\": \"<string>\",\n      \"fraud_rules\": {\n        \"cvv_always_required\": \"<boolean>\",\n        \"cvv_required_max_limit\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"image_url\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_id\": \"<string>\",\n      \"price\": {\n        \"base_price\": \"<string>\",\n        \"currency\": \"<string>\",\n        \"idt_service_fee\": \"<string>\",\n        \"idt_service_fee_pct\": \"<number>\",\n        \"max\": \"<string>\",\n        \"min\": \"<string>\",\n        \"price\": \"<string>\",\n        \"price_type\": \"<string>\",\n        \"step\": \"<string>\",\n        \"value\": {\n          \"currency\": \"<string>\",\n          \"fx_factor\": \"<number>\",\n          \"value\": \"<string>\"\n        }\n      },\n      \"priority\": \"<integer>\",\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"sub_type\": \"<string>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"benefits\": {\n        \"data\": \"<number>\",\n        \"data_unlimited\": \"<boolean>\",\n        \"minutes\": \"<integer>\",\n        \"minutes_unlimited\": \"<boolean>\",\n        \"plan_term\": \"<integer>\",\n        \"sms\": \"<integer>\",\n        \"sms_unlimited\": \"<boolean>\"\n      },\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"carrier_promo\": {\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"country\": \"<string>\",\n        \"country_name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"end_at\": \"<integer>\",\n        \"id\": \"<string>\",\n        \"image_type\": \"<string>\",\n        \"image_url\": \"<string>\",\n        \"locale\": \"<string>\",\n        \"max_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"min_value\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        },\n        \"offer_ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"product_sub_types\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"start_at\": \"<integer>\",\n        \"title\": \"<string>\",\n        \"updated_at\": \"<integer>\",\n        \"version\": \"<string>\"\n      },\n      \"destination_country\": \"<string>\",\n      \"fraud_rules\": {\n        \"cvv_always_required\": \"<boolean>\",\n        \"cvv_required_max_limit\": {\n          \"amount\": \"<string>\",\n          \"currency\": \"<string>\"\n        }\n      },\n      \"image_url\": \"<string>\",\n      \"language\": \"<string>\",\n      \"note\": {\n        \"denom_text\": \"<string>\",\n        \"lang\": \"<string>\",\n        \"note_text\": \"<string>\"\n      },\n      \"offer_id\": \"<string>\",\n      \"price\": {\n        \"base_price\": \"<string>\",\n        \"currency\": \"<string>\",\n        \"idt_service_fee\": \"<string>\",\n        \"idt_service_fee_pct\": \"<number>\",\n        \"max\": \"<string>\",\n        \"min\": \"<string>\",\n        \"price\": \"<string>\",\n        \"price_type\": \"<string>\",\n        \"step\": \"<string>\",\n        \"value\": {\n          \"currency\": \"<string>\",\n          \"fx_factor\": \"<number>\",\n          \"value\": \"<string>\"\n        }\n      },\n      \"priority\": \"<integer>\",\n      \"product_description\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"sub_type\": \"<string>\",\n      \"version\": \"<string>\"\n    }\n  ]\n}"
+								},
+								{
+									"id": "6e2e5b5a-6acb-4023-8c18-35f5e7848c17",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/offers?recipient_msisdn=<string>&carrier_code=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"offers"
+											],
+											"query": [
+												{
+													"description": "(Required) Recipient msisdn",
+													"key": "recipient_msisdn",
+													"value": "<string>"
+												},
+												{
+													"description": "Carrier code",
+													"key": "carrier_code",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "1a8b52cc-4812-4b74-a456-e07a4e9446a3",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/offers?recipient_msisdn=<string>&carrier_code=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"offers"
+											],
+											"query": [
+												{
+													"description": "(Required) Recipient msisdn",
+													"key": "recipient_msisdn",
+													"value": "<string>"
+												},
+												{
+													"description": "Carrier code",
+													"key": "carrier_code",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								}
+							]
+						}
+					],
+					"id": "5041144b-a160-4de0-96e5-981beea88a7d"
+				},
+				{
+					"name": "promos",
+					"item": [
+						{
+							"name": "search",
+							"item": [
+								{
+									"name": "Search promos",
+									"id": "51a25527-ff8c-4399-b0eb-d501444d2dec",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/promos/search?user_country=<string>&language=<string>&application_id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"promos",
+												"search"
+											],
+											"query": [
+												{
+													"key": "user_country",
+													"value": "<string>",
+													"description": "(Required) User country, e.g. US"
+												},
+												{
+													"key": "language",
+													"value": "<string>",
+													"description": "Language for promos, supported languages are en, de, es, or fr; default is en"
+												},
+												{
+													"key": "application_id",
+													"value": "<string>",
+													"description": "(Required) Application ID, e.g. 123456"
+												}
+											]
+										},
+										"description": "Search available promos"
+									},
+									"response": [
+										{
+											"id": "79d0a685-259e-4fcc-9e88-8d48730668d1",
+											"name": "List of available promos",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/promos/search?user_country=<string>&language=<string>&application_id=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"promos",
+														"search"
+													],
+													"query": [
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Language for promos, supported languages are en, de, es, or fr; default is en",
+															"key": "language",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"all_promos\": [\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"locale\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sub_header\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"locale\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sub_header\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    }\n  ],\n  \"terms_content_url\": \"<string>\"\n}"
+										},
+										{
+											"id": "70f4c742-46d0-4c56-ab13-62c07e304996",
+											"name": "Missing or invalid required params",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/promos/search?user_country=<string>&language=<string>&application_id=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"promos",
+														"search"
+													],
+													"query": [
+														{
+															"description": "(Required) User country, e.g. US",
+															"key": "user_country",
+															"value": "<string>"
+														},
+														{
+															"description": "Language for promos, supported languages are en, de, es, or fr; default is en",
+															"key": "language",
+															"value": "<string>"
+														},
+														{
+															"description": "(Required) Application ID, e.g. 123456",
+															"key": "application_id",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+										}
+									]
+								}
+							],
+							"id": "80bbb14a-e67f-4d07-88bd-68c1a37b57d2"
+						},
+						{
+							"name": "Get promos",
+							"id": "302ccda0-3269-4c08-acad-3a709bc0f444",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": "{{baseUrl}}/v1/promos",
+								"description": "Get available promos"
+							},
+							"response": [
+								{
+									"id": "6102c4aa-3bb6-467c-9625-0ff45c9d9844",
+									"name": "List of available promos",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v1/promos"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"all_promos\": [\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"locale\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sub_header\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"locale\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sub_header\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    }\n  ],\n  \"terms_content_url\": \"<string>\"\n}"
+								},
+								{
+									"id": "83cada9d-39e7-4991-a525-9be929937270",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v1/promos"
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "e3995a71-0985-4c2b-9e0a-62419bb8dd2e",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v1/promos"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								}
+							]
+						}
+					],
+					"id": "cd618809-cda3-4f31-b1d1-f6a8820001a6"
+				},
+				{
+					"name": "timers",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Cancels a scheduled/recurring MTU timer by transaction ID",
+									"id": "85f7c63d-f785-4804-a4e1-58f7263f6377",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "apikey",
+											"apikey": {
+												"key": "Authorization",
+												"value": "{{apiKey}}",
+												"in": "header"
+											}
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/timers/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"timers",
+												":id"
+											],
+											"variable": [
+												{
+													"id": "45cced01-814e-40d3-a972-bc46bdddcbcd",
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) timer id"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"id": "292b8b2b-af6c-49d9-9017-0d7751d36c3f",
+											"name": "OK",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "Authorization",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/timers/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"timers",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{}"
+										},
+										{
+											"id": "e783ade5-7c66-4541-b615-0f18e2effc6f",
+											"name": "Missing or invalid required params",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "Authorization",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/timers/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"timers",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+										},
+										{
+											"id": "7f8c4ea0-0210-40b9-93a1-1ba79e8c8439",
+											"name": "Invalid access token",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "*/*"
+													},
+													{
+														"description": "Added as a part of security scheme: apikey",
+														"key": "Authorization",
+														"value": "<API Key>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/timers/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"timers",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "*/*"
+												}
+											],
+											"cookie": [],
+											"responseTime": null,
+											"body": "{}"
+										}
+									]
+								}
+							],
+							"id": "b0395b5d-e896-4069-b3a5-7edca8a04199"
+						}
+					],
+					"id": "52102ec6-bd7e-459f-b88f-3af80c0df41c"
+				},
+				{
+					"name": "transactions",
+					"item": [
+						{
+							"name": "Get transaction history",
+							"id": "7c88bbd5-9218-4333-9b12-0c431ff1f2f5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/transactions?offset=<integer>&limit=<integer>&timer_id=<string>&txid=<string>&product_type=<string>&successful_only=<boolean>&all_transactions=<boolean>&before=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"transactions"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "<integer>",
+											"description": "offset"
+										},
+										{
+											"key": "limit",
+											"value": "<integer>",
+											"description": "limit"
+										},
+										{
+											"key": "timer_id",
+											"value": "<string>",
+											"description": "timer_id"
+										},
+										{
+											"key": "txid",
+											"value": "<string>",
+											"description": "txid"
+										},
+										{
+											"key": "product_type",
+											"value": "<string>",
+											"description": "mtu or voucher, nil for mtu"
+										},
+										{
+											"key": "successful_only",
+											"value": "<boolean>",
+											"description": "to query successful transactions only, default false"
+										},
+										{
+											"key": "all_transactions",
+											"value": "<boolean>",
+											"description": "to query all transactions, default false does not return early failed and provider-queued txes"
+										},
+										{
+											"key": "before",
+											"value": "<string>",
+											"description": "before a date in UNIX time format"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"id": "79296723-ac03-4309-80ac-309bbdd75b67",
+									"name": "Lists of pending and completed transactions",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/transactions?offset=<integer>&limit=<integer>&timer_id=<string>&txid=<string>&product_type=<string>&successful_only=<boolean>&all_transactions=<boolean>&before=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"transactions"
+											],
+											"query": [
+												{
+													"description": "offset",
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"description": "limit",
+													"key": "limit",
+													"value": "<integer>"
+												},
+												{
+													"description": "timer_id",
+													"key": "timer_id",
+													"value": "<string>"
+												},
+												{
+													"description": "txid",
+													"key": "txid",
+													"value": "<string>"
+												},
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												},
+												{
+													"description": "to query successful transactions only, default false",
+													"key": "successful_only",
+													"value": "<boolean>"
+												},
+												{
+													"description": "to query all transactions, default false does not return early failed and provider-queued txes",
+													"key": "all_transactions",
+													"value": "<boolean>"
+												},
+												{
+													"description": "before a date in UNIX time format",
+													"key": "before",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "[\n  {\n    \"transactions\": [\n      {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"<string>\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"<string>\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"<string>\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"<string>\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"voluptate_b73\": \"<string>\",\n          \"mollit1\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": \"<integer>\",\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": \"<integer>\",\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"<string>\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      },\n      {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"<string>\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"<string>\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"<string>\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"<string>\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"aliquip_d\": \"<string>\",\n          \"id4\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": \"<integer>\",\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": \"<integer>\",\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"<string>\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"transactions\": [\n      {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"<string>\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"<string>\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"<string>\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"<string>\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"tempor5\": \"<string>\",\n          \"tempor_34\": \"<string>\",\n          \"quis9\": \"<string>\",\n          \"nisi_b\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": \"<integer>\",\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": \"<integer>\",\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"<string>\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      },\n      {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"<string>\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"<string>\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"<string>\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"<string>\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"<string>\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"dolorfde\": \"<string>\",\n          \"elitf\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": \"<integer>\",\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": \"<integer>\",\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"<string>\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      }\n    ]\n  }\n]"
+								},
+								{
+									"id": "14acf382-4c20-4b31-97cf-d4dfc0a5852c",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/transactions?offset=<integer>&limit=<integer>&timer_id=<string>&txid=<string>&product_type=<string>&successful_only=<boolean>&all_transactions=<boolean>&before=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"transactions"
+											],
+											"query": [
+												{
+													"description": "offset",
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"description": "limit",
+													"key": "limit",
+													"value": "<integer>"
+												},
+												{
+													"description": "timer_id",
+													"key": "timer_id",
+													"value": "<string>"
+												},
+												{
+													"description": "txid",
+													"key": "txid",
+													"value": "<string>"
+												},
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												},
+												{
+													"description": "to query successful transactions only, default false",
+													"key": "successful_only",
+													"value": "<boolean>"
+												},
+												{
+													"description": "to query all transactions, default false does not return early failed and provider-queued txes",
+													"key": "all_transactions",
+													"value": "<boolean>"
+												},
+												{
+													"description": "before a date in UNIX time format",
+													"key": "before",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "1658cddb-e2fc-47c1-b7ba-83e9bc48b3af",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/transactions?offset=<integer>&limit=<integer>&timer_id=<string>&txid=<string>&product_type=<string>&successful_only=<boolean>&all_transactions=<boolean>&before=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"transactions"
+											],
+											"query": [
+												{
+													"description": "offset",
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"description": "limit",
+													"key": "limit",
+													"value": "<integer>"
+												},
+												{
+													"description": "timer_id",
+													"key": "timer_id",
+													"value": "<string>"
+												},
+												{
+													"description": "txid",
+													"key": "txid",
+													"value": "<string>"
+												},
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												},
+												{
+													"description": "to query successful transactions only, default false",
+													"key": "successful_only",
+													"value": "<boolean>"
+												},
+												{
+													"description": "to query all transactions, default false does not return early failed and provider-queued txes",
+													"key": "all_transactions",
+													"value": "<boolean>"
+												},
+												{
+													"description": "before a date in UNIX time format",
+													"key": "before",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								},
+								{
+									"id": "96f7be20-813b-451c-abe8-fa42874501df",
+									"name": "Transaction not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/transactions?offset=<integer>&limit=<integer>&timer_id=<string>&txid=<string>&product_type=<string>&successful_only=<boolean>&all_transactions=<boolean>&before=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"transactions"
+											],
+											"query": [
+												{
+													"description": "offset",
+													"key": "offset",
+													"value": "<integer>"
+												},
+												{
+													"description": "limit",
+													"key": "limit",
+													"value": "<integer>"
+												},
+												{
+													"description": "timer_id",
+													"key": "timer_id",
+													"value": "<string>"
+												},
+												{
+													"description": "txid",
+													"key": "txid",
+													"value": "<string>"
+												},
+												{
+													"description": "mtu or voucher, nil for mtu",
+													"key": "product_type",
+													"value": "<string>"
+												},
+												{
+													"description": "to query successful transactions only, default false",
+													"key": "successful_only",
+													"value": "<boolean>"
+												},
+												{
+													"description": "to query all transactions, default false does not return early failed and provider-queued txes",
+													"key": "all_transactions",
+													"value": "<boolean>"
+												},
+												{
+													"description": "before a date in UNIX time format",
+													"key": "before",
+													"value": "<string>"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								}
+							]
+						}
+					],
+					"id": "55da2ff9-d3f9-4ae0-a701-2229a891808a"
+				}
+			],
+			"id": "ed0e93e7-f69b-4ea2-bea6-22ed0beb1a19"
+		},
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "promos",
+					"item": [
+						{
+							"name": "Get promos v2",
+							"id": "06247ac7-318c-4707-ab58-6d609cf0c8f8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": {
+										"key": "Authorization",
+										"value": "{{apiKey}}",
+										"in": "header"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": "{{baseUrl}}/v2/promos",
+								"description": "Get available promos v2"
+							},
+							"response": [
+								{
+									"id": "2dc7e70f-4fd5-4741-8bb4-310af17f543d",
+									"name": "List of available promos v2",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v2/promos"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"all_promos\": [\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"image_type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"locale\": \"<string>\",\n      \"max_value\": {\n        \"amount\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"min_value\": {\n        \"amount\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"offer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"product_sub_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_at\": \"<integer>\",\n      \"title\": \"<string>\",\n      \"updated_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    },\n    {\n      \"carrier\": {\n        \"code\": \"<string>\",\n        \"display_name\": \"<string>\",\n        \"image_url\": \"<string>\"\n      },\n      \"country\": \"<string>\",\n      \"country_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"image_type\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"locale\": \"<string>\",\n      \"max_value\": {\n        \"amount\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"min_value\": {\n        \"amount\": \"<string>\",\n        \"currency\": \"<string>\"\n      },\n      \"offer_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"product_sub_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"start_at\": \"<integer>\",\n      \"title\": \"<string>\",\n      \"updated_at\": \"<integer>\",\n      \"version\": \"<string>\"\n    }\n  ],\n  \"terms_content_url\": \"<string>\"\n}"
+								},
+								{
+									"id": "b4443d32-1279-42f7-ab7a-b6d74664895b",
+									"name": "Missing or invalid required params",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v2/promos"
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
+								},
+								{
+									"id": "17604ba7-c52b-44fd-aee0-82dcddb51611",
+									"name": "Invalid access token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "*/*"
+											},
+											{
+												"description": "Added as a part of security scheme: apikey",
+												"key": "Authorization",
+												"value": "<API Key>"
+											}
+										],
+										"url": "{{baseUrl}}/v2/promos"
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"responseTime": null,
+									"body": "{}"
+								}
+							]
+						}
+					],
+					"id": "4852e9d5-dbe8-426f-a34f-78c8f1a1109c"
+				}
+			],
+			"id": "e1cb628e-28c5-4f40-a153-04fc27511e92"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api-dev.idtm.io/mtu"
+		}
+	]
+}
