@@ -2693,7 +2693,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d723c3f2-2bdd-4a86-a968-f30955902bde",
+				"id": "6057d9dc-2011-412b-832d-a15948fc6f6b",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2703,7 +2703,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e8b6fa0d-bfac-4d18-9fed-b85bb82c0432",
+				"id": "e5934d78-1f30-4d9f-95fa-b9ad5c774890",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2714,21 +2714,13 @@
 	"variable": [
 		{
 			"key": "phoneNumber",
-			"value": "+12126583916",
+			"value": "+19549438849",
 			"type": "string"
 		},
 		{
 			"key": "recipient_number",
 			"value": "+14323887460",
 			"type": "string"
-		},
-		{
-			"key": "access_token",
-			"value": ""
-		},
-		{
-			"key": "profile_id",
-			"value": ""
 		}
 	]
 }
