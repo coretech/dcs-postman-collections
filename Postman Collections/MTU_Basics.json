@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Authorize",
+			"name": "authorize",
 			"item": [
 				{
 					"name": "Enter phone number - auth/v1/sms/signup",
@@ -226,7 +226,7 @@
 			"description": "This folder sets up the resources needed for the test folders later in the collection:\n\n1. **Generate new API key** - Generates a new API key for use in the collection and saves the value as a collection variable, authorizing all following requests.\n2. **Create** **`fromAccount`** - This account is created to test the results of a transaction. Saves the accountId as a collection variable, named as `fromAccountId`. This account will send funds in a transfer.\n3. **Create** **`toAccount`** - Creates a new account that we will use in the `Account Tests` folder. Saves the accountId as a collection variable, named as `toAccountId`. This account will receive a transfer of funds.\n4. **Transfer 500 coins to \"to\" account** - Transfer 500 coins from the `fromAccount` to the `toAccount`."
 		},
 		{
-			"name": "Cards",
+			"name": "cards",
 			"item": [
 				{
 					"name": "Get tokenized_card_number",
@@ -410,7 +410,7 @@
 			"id": "8d19c712-2d3c-49df-bc3b-118490bb0375"
 		},
 		{
-			"name": "Profile",
+			"name": "profile",
 			"item": [
 				{
 					"name": "Get balance",
@@ -478,7 +478,7 @@
 			"id": "4ba64958-ec6a-40ec-85df-d87e6dc9e285"
 		},
 		{
-			"name": "MTU",
+			"name": "mtu",
 			"item": [
 				{
 					"name": "mtu/v1/config",
@@ -1415,7 +1415,13 @@
 							"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"Duis_b\": 27244114.775680646,\n    \"Excepteur53\": 35239588,\n    \"ea_3af\": false\n  },\n  \"txid\": \"<string>\"\n}"
 						}
 					]
-				},
+				}
+			],
+			"id": "072e6904-85fe-4646-b09d-3edab2f581a6"
+		},
+		{
+			"name": "store",
+			"item": [
 				{
 					"name": "store/v1/offers/voucher",
 					"id": "08157a08-9ba9-49ec-8915-84c6455007f8",
@@ -2684,9 +2690,568 @@
 							"body": "{}"
 						}
 					]
+				},
+				{
+					"name": "Get egift offer [/store/v1/offers/egift/:id]",
+					"id": "a6d3677c-11fa-4f5b-ae3f-90a251228d1a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "x-profile-id",
+								"value": "{{profile_id}}"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/store/v1/offers/egift/:id?recipient_country=US",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"store",
+								"v1",
+								"offers",
+								"egift",
+								":id"
+							],
+							"query": [
+								{
+									"key": "recipient_country",
+									"value": "US",
+									"description": "(Required) Recipient msisdn"
+								},
+								{
+									"key": "promo_id",
+									"value": "TESTEGIFT",
+									"description": "promotion ID",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"id": "9ca7d709-a5a6-469c-8cc5-fb384663641d",
+									"key": "id",
+									"value": "ADIDAS_US_5_EGIFT",
+									"description": "(Required) offer ID"
+								}
+							]
+						},
+						"description": "Get the specic mtu offer. If query param promo_id is passed this can be used to get the updated price for the offer"
+					},
+					"response": [
+						{
+							"id": "bde7427e-0e32-4841-a0f0-a44fb9425a0d",
+							"name": "No promo",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/offers/egift/:id?recipient_country=US",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"offers",
+										"egift",
+										":id"
+									],
+									"query": [
+										{
+											"key": "recipient_country",
+											"value": "US",
+											"description": "(Required) Recipient msisdn"
+										},
+										{
+											"key": "promo_id",
+											"value": "TESTEGIFT",
+											"description": "promotion ID",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "AMAZON_001",
+											"description": "(Required) offer ID"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "884977d7-3053-4158-974c-00f1a06ab27b",
+							"name": "Static promo code",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/offers/egift/:id?recipient_country=US&promo_id=TESTEGIFT",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"offers",
+										"egift",
+										":id"
+									],
+									"query": [
+										{
+											"key": "recipient_country",
+											"value": "US",
+											"description": "(Required) Recipient msisdn"
+										},
+										{
+											"key": "promo_id",
+											"value": "TESTEGIFT",
+											"description": "promotion ID"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "AMAZON_001",
+											"description": "(Required) offer ID"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "a927a30a-c98d-430f-9840-b3866fd6145b",
+							"name": "Automatic promo code",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/offers/egift/:id?recipient_country=GT",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"offers",
+										"egift",
+										":id"
+									],
+									"query": [
+										{
+											"key": "recipient_country",
+											"value": "GT",
+											"description": "(Required) Recipient msisdn"
+										},
+										{
+											"key": "promo_id",
+											"value": "TESTEGIFT",
+											"description": "promotion ID",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "TROPIGAS_GT_17_DTC",
+											"description": "(Required) offer ID"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "fd968b9e-5d3a-4300-b82b-08c561eae1aa",
+							"name": "Missing or invalid required params",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/offers/mtu/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"offers",
+										"mtu",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "AMAZON_001"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error_code\": 36,\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"proident40\": -25268664.999438643,\n    \"commodoa\": true\n  },\n  \"txid\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Buy the egift offer. [/store/v2/purchases/egift] Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5bffe6c2-7d0c-44bf-b5c4-390702b6f5bf",
+								"exec": [
+									"let response = pm.response.json()",
+									"pm.collectionVariables.set('purchase_id', response.id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b94ebd9b-3e3b-4323-a8c7-cd6d129a8395",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "x-profile-id",
+								"value": "{{profile_id}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipient_country\": \"US\",\n  \"egift_request\": {\n    \"handle_id\": \"2100012838\",\n    \"offer_id\": \"ADIDAS_US_25_EGIFT\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"+12014380063\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrl}}/store/v2/purchases/egift",
+						"description": "Calling this endpoint will start an asynchronous purchase process for the mtu offer."
+					},
+					"response": [
+						{
+							"id": "11ee2f8a-14ac-4cd0-a9f1-6516610ea9a5",
+							"name": "Buy without promo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"recipient_country\": \"US\",\n    \"egift_request\": {\n        \"handle_id\": \"2100012838\",\n        \"offer_id\": \"AMAZON_001\",\n        \"offer_price_in_cents\": 550,\n        \"recipient_msisdn\": \"+12014380063\",\n        \"cvv\": 999,\n        \"extra_fields\": {\n            \"recipient_first_name\": \"FirstName\",\n            \"recipient_last_name\": \"LastName\",\n            \"sender_first_name\": \"Api\",\n            \"sender_last_name\": \"Tests\"\n        },\n        \"installation_id\": null,\n        \"launch_at\": null,\n        \"offer_required_fields\": [\n            \"recipient_first_name\",\n            \"recipient_last_name\",\n            \"recipient_msisdn\",\n            \"sender_first_name\",\n            \"sender_last_name\"\n        ],\n        \"orig_recipient_number\": null,\n        \"recurrent_interval\": null,\n        \"recurrent_unit\": null,\n        \"reminder_interval\": null,\n        \"reminder_unit\": null,\n        \"request_id\": null,\n        \"return_url\": \"https://bossrevolution.com\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/v2/purchases/egift"
+							},
+							"_postman_previewlanguage": null,
+							"header": [
+								{}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "b7e82ee7-41ad-4635-9f45-f0f5540129b5",
+							"name": "Buy with static promo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"recipient_country\": \"US\",\n  \"egift_request\": {\n    \"handle_id\": \"2100012838\",\n    \"offer_id\": \"AMAZON_001\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"+12014380063\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": \"TESTEGIFT\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/v2/purchases/egift"
+							},
+							"_postman_previewlanguage": null,
+							"header": [
+								""
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "6a6721a1-86d8-40ab-b01a-cfd39cf2bbec",
+							"name": "Buy with automatic promo",
+							"originalRequest": {
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"recipient_country\": \"GT\",\n  \"egift_request\": {\n    \"handle_id\": \"2100012838\",\n    \"offer_id\": \"TROPIGAS_GT_17_DTC\",\n    \"offer_price_in_cents\": 1700,\n    \"recipient_msisdn\": \"+50242520123\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": \"TESTEGIFT\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseUrl}}/v2/purchases/egift"
+							},
+							"_postman_previewlanguage": null,
+							"header": [
+								""
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get status of the purchases. [/store/v1/purchases/:id] Copy",
+					"id": "3a0dab50-6e02-469b-806e-a662b3280288",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/store/v1/purchases/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"store",
+								"v1",
+								"purchases",
+								":id"
+							],
+							"variable": [
+								{
+									"id": "e3b9708b-4d8b-4eaa-a4bb-fb231a4bb187",
+									"key": "id",
+									"value": "{{purchase_id}}"
+								}
+							]
+						},
+						"description": "returns the status of the purchase and for all items in the purchase"
+					},
+					"response": [
+						{
+							"id": "4eb48605-4fac-4642-ae9a-d6d7320c165f",
+							"name": "purchase state",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/purchases/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"purchases",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"HDM$$type\": \"<string>\",\n  \"created_at\": {},\n  \"id\": \"<string>\",\n  \"items\": [\n    {\n      \"calling_plan_tx\": {\n        \"active_plan_info\": {\n          \"activated_at\": \"<integer>\",\n          \"expires_at\": \"<integer>\",\n          \"minutes\": \"<integer>\",\n          \"term\": \"<integer>\"\n        },\n        \"description\": \"<string>\",\n        \"enrollment\": {\n          \"handle_id\": \"<string>\",\n          \"id\": \"<string>\",\n          \"ad_id\": \"<string>\",\n          \"antiFraudAdditionalXmlData\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"antiFraudCheck\": \"<string>\",\n          \"antiFraudCheckPassword\": \"<string>\",\n          \"antiFraudCheckUser\": \"<string>\",\n          \"client_request_id\": \"<string>\",\n          \"currency_code\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"impression_id\": \"<string>\",\n          \"originIpAddress\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"return_url_3ds\": \"<string>\",\n          \"show_discount\": \"<string>\",\n          \"store_purchase_id\": \"<string>\",\n          \"subscribe\": \"<boolean>\",\n          \"transaction_id_3ds\": \"<string>\"\n        },\n        \"enrollment_id\": \"<string>\",\n        \"error_reason\": \"missing_required_fields\",\n        \"purchase_status\": \"scheduled\",\n        \"redirect_url_3ds\": \"<string>\",\n        \"title\": \"<string>\",\n        \"transaction_id_3ds\": \"<string>\"\n      },\n      \"fail_reason\": \"topup_too_soon\",\n      \"mtu_tx\": {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"refunded\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"instant\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"failed\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"imtu\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"automatic_promo\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"discount\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"nisi_0\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": 0,\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": 2,\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"canceled\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      },\n      \"product_type\": \"calling_plan\",\n      \"voucher_tx\": {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"refunded\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"scheduled\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"failed\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"calling_plan\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"static_promo\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"combo\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"nostrud_d4\": \"<string>\",\n          \"aliquipb\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": 4,\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": 4,\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"active\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      }\n    },\n    {\n      \"calling_plan_tx\": {\n        \"active_plan_info\": {\n          \"activated_at\": \"<integer>\",\n          \"expires_at\": \"<integer>\",\n          \"minutes\": \"<integer>\",\n          \"term\": \"<integer>\"\n        },\n        \"description\": \"<string>\",\n        \"enrollment\": {\n          \"handle_id\": \"<string>\",\n          \"id\": \"<string>\",\n          \"ad_id\": \"<string>\",\n          \"antiFraudAdditionalXmlData\": [\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            },\n            {\n              \"key\": \"<string>\",\n              \"value\": \"<string>\"\n            }\n          ],\n          \"antiFraudCheck\": \"<string>\",\n          \"antiFraudCheckPassword\": \"<string>\",\n          \"antiFraudCheckUser\": \"<string>\",\n          \"client_request_id\": \"<string>\",\n          \"currency_code\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"impression_id\": \"<string>\",\n          \"originIpAddress\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"return_url_3ds\": \"<string>\",\n          \"show_discount\": \"<string>\",\n          \"store_purchase_id\": \"<string>\",\n          \"subscribe\": \"<boolean>\",\n          \"transaction_id_3ds\": \"<string>\"\n        },\n        \"enrollment_id\": \"<string>\",\n        \"error_reason\": \"failed\",\n        \"purchase_status\": \"scheduled\",\n        \"redirect_url_3ds\": \"<string>\",\n        \"title\": \"<string>\",\n        \"transaction_id_3ds\": \"<string>\"\n      },\n      \"fail_reason\": \"invalid_product\",\n      \"mtu_tx\": {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"success\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"repeat\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"failed_to_authorize_payment\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"imtu\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"static_promo\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"discount\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"aute_f29\": \"<string>\",\n          \"quis73\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": 4,\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": 4,\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"canceled\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      },\n      \"product_type\": \"calling_plan\",\n      \"voucher_tx\": {\n        \"offer_id\": \"<string>\",\n        \"purchase_status\": \"scheduled\",\n        \"recipient_msisdn\": \"<string>\",\n        \"request_type\": \"repeat\",\n        \"authorized_at\": \"<integer>\",\n        \"available_carrier_promos\": [\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"description\": \"<string>\",\n            \"end_at\": \"<integer>\",\n            \"start_at\": \"<integer>\",\n            \"title\": \"<string>\"\n          }\n        ],\n        \"carrier\": {\n          \"code\": \"<string>\",\n          \"display_name\": \"<string>\",\n          \"image_url\": \"<string>\"\n        },\n        \"carrier_promo\": {\n          \"description\": \"<string>\",\n          \"end_at\": \"<integer>\",\n          \"id\": \"<string>\",\n          \"max_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"min_value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"start_at\": \"<integer>\",\n          \"title\": \"<string>\"\n        },\n        \"delivery_info\": \"<string>\",\n        \"error_reason\": \"missing_offer\",\n        \"handle_id\": \"<string>\",\n        \"language\": \"<string>\",\n        \"note\": {\n          \"denom_text\": \"<string>\",\n          \"lang\": \"<string>\",\n          \"note_text\": \"<string>\"\n        },\n        \"offer_image_url\": \"<string>\",\n        \"pricing_information\": {\n          \"base_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discount\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"discounted_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"fees\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"original_price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"price\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          },\n          \"value\": {\n            \"amount\": \"<string>\",\n            \"currency\": \"<string>\"\n          }\n        },\n        \"product_description\": \"<string>\",\n        \"product_name\": \"<string>\",\n        \"product_subtype\": \"<string>\",\n        \"product_type\": \"calling_plan\",\n        \"promo\": {\n          \"description\": \"<string>\",\n          \"id\": \"<string>\",\n          \"loyalty_promo\": {\n            \"activation_code\": \"<string>\",\n            \"automatic_promo_description\": \"<string>\",\n            \"participation_id\": \"<string>\",\n            \"ready\": \"<boolean>\",\n            \"reservation_code\": \"<string>\",\n            \"static_promo_description\": \"<string>\",\n            \"type\": \"automatic_promo\"\n          },\n          \"title\": \"<string>\",\n          \"type\": \"discount\"\n        },\n        \"purchase_completed_at\": \"<integer>\",\n        \"purchase_started_at\": \"<integer>\",\n        \"receipt\": {\n          \"veniam_ec\": \"<string>\"\n        },\n        \"recipient_country\": \"<string>\",\n        \"redirect_url\": \"<string>\",\n        \"refundable\": \"<boolean>\",\n        \"refunded_at\": \"<integer>\",\n        \"repeat_info\": {\n          \"launch_at\": \"<integer>\",\n          \"recurrent_interval\": \"<integer>\",\n          \"recurrent_unit\": 3,\n          \"reminder_interval\": \"<integer>\",\n          \"reminder_timer_id\": \"<string>\",\n          \"reminder_unit\": 0,\n          \"timer_id\": \"<string>\",\n          \"timer_status\": \"canceled\"\n        },\n        \"store_purchase_id\": \"<string>\",\n        \"txid\": \"<string>\"\n      }\n    }\n  ],\n  \"modified_at\": {},\n  \"price_info\": {\n    \"currency_code\": \"<string>\",\n    \"total_discount\": \"<string>\",\n    \"total_original_price\": \"<string>\",\n    \"total_price\": \"<string>\"\n  },\n  \"promo_id\": \"<string>\",\n  \"user_id\": \"<string>\"\n}"
+						},
+						{
+							"id": "93b14c0d-4fea-48f0-a699-a5807e077e78",
+							"name": "the purchase state with the given ID was not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/purchases/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"purchases",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error_code\": 36,\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"proident40\": -25268664.999438643,\n    \"commodoa\": true\n  },\n  \"txid\": \"<string>\"\n}"
+						},
+						{
+							"id": "1efccc16-3823-4572-8aa9-1c6d8a5f4da6",
+							"name": "Invalid access token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/purchases/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"purchases",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{}"
+						}
+					]
 				}
 			],
-			"id": "072e6904-85fe-4646-b09d-3edab2f581a6"
+			"id": "a2d57feb-a400-4018-af6c-a622b053d3cd"
 		}
 	],
 	"event": [
