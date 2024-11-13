@@ -4539,7 +4539,7 @@
 								}
 							}
 						},
-						"url": "{{baseUrl}}/store/v2/purchases",
+						"url": "{{baseUrl}}/store/v2/purchases/egift",
 						"description": "Calling this endpoint will start an asynchronous purchase process for the offers. In case promo_id is given with the requests discounts will be applied."
 					},
 					"response": [
