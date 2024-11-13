@@ -2026,10 +2026,45 @@
 			"id": "e1cb628e-28c5-4f40-a153-04fc27511e92"
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{apiKey}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "bb15636d-d0c7-421a-a297-cfdd18f7a83c",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0948ffb1-d76a-4496-94ce-0d18e40ba4fd",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io/mtu"
+		},
+		{
+			"key": "apiKey",
+			"value": "QHtLZEYVVjpGCdEefHnRPuyFhrfooB2BK2W4ldYBE.36Yy1PypBSDhenCtlCoi.jSSk9p.Fl6mQauxmOPbWKCZDuUF4R9P3ZPsA7Nb206gahtoEVQ7N3aCO7lZOBIrH.",
+			"type": "string"
 		}
 	]
 }
