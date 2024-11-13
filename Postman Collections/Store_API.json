@@ -3321,7 +3321,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "bc7b4cc6-27a9-4b36-a736-9daa1aebcb02",
+				"id": "9244f8cf-fd79-4621-9d59-6a1b2aa2278e",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3332,7 +3332,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "26aa134f-4a22-449c-8954-75175219a3cd",
+				"id": "357b1b60-b7f8-486d-8da9-85257051516b",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -3343,14 +3343,12 @@
 	],
 	"variable": [
 		{
-			"id": "ec8fff1c-9af8-4a61-8064-5d8d0c45033c",
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io/store"
 		},
 		{
-			"id": "fe6ce368-ec52-4df8-96f7-0513cfaad6f9",
 			"key": "apiKey",
-			"value": "CkqQCtBcYy6jPyJq0c6aYMk5WQ7YYN0akgFvw6EoH9HakOaivd2a4sxjYmbjsEHebih7gjbfryFrfa_JxhGgT7H58rAyoTxwRPR0sn6RnJ0RLrAK5zJgcJLpTGmm3_3f"
+			"value": "onkJ6hxirsSv486CnWu6tBJER.DBdt3grL7VdycEWfKLM7gNqyr1gKNY23nBMeDp3UYZSQjjKOg2zn_Yv4yxwWYlYfZzp0g6GB.XcYdGZ.hHgQq35hVQHX85AcT.NfCB"
 		}
 	]
 }
