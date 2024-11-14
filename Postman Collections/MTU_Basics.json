@@ -433,7 +433,7 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"url": "{{baseUrl}}/v1/me",
+						"url": "{{baseUrl}}/profile/v1/me",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/call-top-up/calltopupapi/getbalance' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
 					"response": []
@@ -3284,17 +3284,17 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "2ebfe192-7fcd-43f0-9746-59f1e31b46de",
+				"id": "7f5d2408-b4d1-41b9-afa1-dc015c24029e",
 				"type": "text/javascript",
 				"exec": [
-					""
+					"pm.collectionVariables.set(\"baseUrl\", pm.environment.get(\"baseHost\"));"
 				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
-				"id": "8e29bb42-efac-481c-8c4b-8b0ce8184d41",
+				"id": "c68d626e-36f0-4aae-94a5-92720aebe13f",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3319,6 +3319,16 @@
 		},
 		{
 			"key": "profile_id",
+			"value": ""
+		},
+		{
+			"key": "sa",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "baseUrl",
 			"value": ""
 		}
 	]
