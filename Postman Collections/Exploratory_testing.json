@@ -3118,17 +3118,17 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "7e80b2c2-04df-4f12-b08f-6dbeee7904ce",
+				"id": "ea479867-aa00-4d4f-a10d-e91d85e60d83",
 				"type": "text/javascript",
 				"exec": [
-					"pm.collectionVariables.set(\"baseUrl\", pm.environment.get(\"baseHost\"));"
+					""
 				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
-				"id": "189df997-8120-4611-9fe7-f32a3ad2b748",
+				"id": "472c8598-a85f-487a-af35-927be8645cb1",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3154,10 +3154,6 @@
 			"value": ""
 		},
 		{
-			"key": "baseUrl",
-			"value": ""
-		},
-		{
 			"key": "apiKey",
 			"value": ""
 		},
@@ -3167,7 +3163,7 @@
 			"type": "string"
 		},
 		{
-			"key": "baseHost",
+			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io",
 			"type": "string"
 		}
