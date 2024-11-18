@@ -2156,10 +2156,8 @@
 							"script": {
 								"id": "840101f8-52ae-4efb-95f5-dca2d8aaefdc",
 								"exec": [
-									"//save api key for use in the following folders",
 									"let response = pm.response.json()",
-									"pm.collectionVariables.set('access_token', response.access_token)",
-									"pm.collectionVariables.set('profile_id', response.profile_id)"
+									"pm.collectionVariables.set('apiKey', response.access_token)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2222,20 +2220,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": "{{baseUrl}}/profile/v1/creditcards",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/profile/v1/creditcards' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
@@ -2253,14 +2239,6 @@
 							{
 								"key": "accept",
 								"value": "application/json"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"body": {
@@ -2284,22 +2262,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
 							}
 						],
 						"url": {
@@ -2709,14 +2676,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -2891,22 +2850,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": "{{baseUrl}}/mtu/v2/promos",
@@ -3030,22 +2978,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -3427,22 +3364,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -3807,22 +3733,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -4192,14 +4107,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -4374,18 +4281,7 @@
 					},
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"recipient_country\": \"US\",\n  \"egift_request\": {\n    \"handle_id\": \"{{handle_id}}\",\n    \"offer_id\": \"{{offer_id}}\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"{{recipient_number}}\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": null\n}",
@@ -4512,22 +4408,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
 							}
 						],
 						"url": {
@@ -4930,9 +4815,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -5043,7 +4925,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "fc5afa53-734a-4fc8-b067-c8a7af540f3e",
+				"id": "538b60da-00df-420c-a38c-abde08ed7410",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5054,7 +4936,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "aab40087-cf57-4d42-9c0d-2ff1ce5bfb42",
+				"id": "84f53a97-cd49-4573-9be5-a94af5b9e282",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
