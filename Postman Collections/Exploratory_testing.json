@@ -10,7 +10,7 @@
 			"name": "Authorize",
 			"item": [
 				{
-					"name": "Enter phone number - auth/v1/sms/signup",
+					"name": "Enter phone number",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -74,7 +74,7 @@
 					"response": []
 				},
 				{
-					"name": "Enter verification code - auth/v1/sms/signup",
+					"name": "Enter verification code",
 					"event": [
 						{
 							"listen": "test",
@@ -289,7 +289,7 @@
 					"response": []
 				},
 				{
-					"name": "Add card - /profile/v1/creditcards",
+					"name": "Add card",
 					"id": "8c162962-9f42-413e-811d-8111b00c99e9",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -312,7 +312,7 @@
 					"response": []
 				},
 				{
-					"name": "Get cards - /profile/v1/creditcards",
+					"name": "Get cards",
 					"event": [
 						{
 							"listen": "test",
