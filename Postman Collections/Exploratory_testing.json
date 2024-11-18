@@ -3118,7 +3118,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "67ef4e1e-fac4-4833-bdf8-dc8afb608a68",
+				"id": "7e80b2c2-04df-4f12-b08f-6dbeee7904ce",
 				"type": "text/javascript",
 				"exec": [
 					"pm.collectionVariables.set(\"baseUrl\", pm.environment.get(\"baseHost\"));"
@@ -3128,7 +3128,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "ca7174c1-bf0e-4c37-9b61-9e89ff2e30e9",
+				"id": "189df997-8120-4611-9fe7-f32a3ad2b748",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3160,6 +3160,16 @@
 		{
 			"key": "apiKey",
 			"value": ""
+		},
+		{
+			"key": "application_id",
+			"value": "ef1e0c26e93b3983ce59eddd3992c942",
+			"type": "string"
+		},
+		{
+			"key": "baseHost",
+			"value": "https://api-dev.idtm.io",
+			"type": "string"
 		}
 	]
 }
