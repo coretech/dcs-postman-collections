@@ -35,7 +35,7 @@
 									"  while(curDate-date < millis);",
 									"}",
 									"",
-									"pause(2000);"
+									"pause(3000);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -901,9 +901,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -1134,16 +1131,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -1440,9 +1427,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -1452,16 +1436,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"body": {
@@ -1607,24 +1581,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -2029,24 +1990,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": "{{baseUrl}}/auth/v1/session",
@@ -5095,7 +5043,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "628c8eb3-fa5b-46f0-830a-2681db91d899",
+				"id": "fc5afa53-734a-4fc8-b067-c8a7af540f3e",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5106,7 +5054,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "33d25290-b033-4498-892d-ff45451f8350",
+				"id": "aab40087-cf57-4d42-9c0d-2ff1ce5bfb42",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5122,6 +5070,16 @@
 		}
 	],
 	"variable": [
+		{
+			"key": "application_id",
+			"value": "ef1e0c26e93b3983ce59eddd3992c942",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://api-dev.idtm.io",
+			"type": "string"
+		},
 		{
 			"key": "phoneNumber",
 			"value": "+12126583916"
@@ -5156,6 +5114,10 @@
 		},
 		{
 			"key": "txid",
+			"value": ""
+		},
+		{
+			"key": "apiKey",
 			"value": ""
 		}
 	]
