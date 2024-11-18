@@ -80,10 +80,8 @@
 							"script": {
 								"id": "840101f8-52ae-4efb-95f5-dca2d8aaefdc",
 								"exec": [
-									"//save api key for use in the following folders",
 									"let response = pm.response.json()",
-									"pm.collectionVariables.set('access_token', response.access_token)",
-									"pm.collectionVariables.set('profile_id', response.profile_id)"
+									"pm.collectionVariables.set('apiKey', response.access_token)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -146,20 +144,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": "{{baseUrl}}/profile/v1/creditcards",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/profile/v1/creditcards' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
@@ -177,14 +163,6 @@
 							{
 								"key": "accept",
 								"value": "application/json"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"body": {
@@ -208,24 +186,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -635,16 +600,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -819,24 +774,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": "{{baseUrl}}/mtu/v2/promos",
@@ -967,16 +909,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -1197,9 +1129,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -5156,11 +5085,17 @@
 			"id": "845660b0-0544-4369-aa62-ba0e217c1ce1"
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{apiKey}}"
+		}
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "2a59b792-631d-45c0-ba64-c7582a9161b8",
+				"id": "628c8eb3-fa5b-46f0-830a-2681db91d899",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -5171,7 +5106,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7a6debce-fd24-405b-9fc1-59bf13555056",
+				"id": "33d25290-b033-4498-892d-ff45451f8350",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
