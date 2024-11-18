@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "authorize",
+			"name": "Authorize",
 			"item": [
 				{
 					"name": "Enter phone number - auth/v1/sms/signup",
