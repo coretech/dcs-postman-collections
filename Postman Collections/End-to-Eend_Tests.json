@@ -2111,7 +2111,7 @@
 									"  while(curDate-date < millis);",
 									"}",
 									"",
-									"pause(2000);"
+									"pause(3000);"
 								],
 								"type": "text/javascript",
 								"packages": {}
