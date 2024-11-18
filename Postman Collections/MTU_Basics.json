@@ -28,7 +28,15 @@
 							"script": {
 								"id": "533bd43d-3211-4310-b95d-5e413fb98e44",
 								"exec": [
-									""
+									"function pause(millis)",
+									" {",
+									"  var date = new Date();",
+									"  var curDate = null;",
+									"  do { curDate = new Date(); }",
+									"  while(curDate-date < millis);",
+									"}",
+									"",
+									"pause(3000);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -73,10 +81,8 @@
 							"script": {
 								"id": "840101f8-52ae-4efb-95f5-dca2d8aaefdc",
 								"exec": [
-									"//save api key for use in the following folders",
 									"let response = pm.response.json()",
-									"pm.collectionVariables.set('access_token', response.access_token)",
-									"pm.collectionVariables.set('profile_id', response.profile_id)"
+									"pm.collectionVariables.set('apiKey', response.access_token)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -120,9 +126,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -235,6 +238,9 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -290,16 +296,7 @@
 					},
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"brand\": \"visa\",\n    \"city\": null,\n    \"country_code\": null,\n    \"cvv\": \"999\",\n    \"exp_month\": 11,\n    \"exp_year\": 2031,\n    \"holder_name\": null,\n    \"postal_code\": \"99999\",\n    \"province\": null,\n    \"street_address_1\": null,\n    \"street_address_2\": null,\n    \"tokenized_card_number\": \"8424242107845504242\"\n}",
@@ -334,20 +331,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": "{{baseUrl}}/profile/v1/creditcards",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/profile/v1/creditcards' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
@@ -360,20 +345,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "PUT",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{}",
@@ -419,20 +392,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": "{{baseUrl}}/profile/v1/me",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/call-top-up/calltopupapi/getbalance' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
@@ -445,20 +406,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "PUT",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"avatar_url\": \"https://example.com/avatar.png\",\n  \"block_caller_id\": false,\n  \"capability\": \"vista\",\n  \"color\": \"#ff8D29\",\n  \"dob\": 47001600000,\n  \"domain_fields\": {\n    \"finance\": {\n      \"user\": {}\n    }\n  },\n  \"firstname\": \"John\",\n  \"language\": \"en\",\n  \"lastname\": \"Domanska\"\n}",
@@ -480,20 +429,8 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
-						"header": [
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
+						"header": [],
 						"url": "{{baseUrl}}/call-top-up/calltopupapi/getbalance",
 						"description": "Generated from cURL: curl --location --request GET 'https://api-dev.idtm.io/call-top-up/calltopupapi/getbalance' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 0' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8'"
 					},
@@ -511,14 +448,6 @@
 							{
 								"key": "accept",
 								"value": "application/json"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"body": {
@@ -553,16 +482,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -737,24 +656,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": "{{baseUrl}}/mtu/v2/promos",
@@ -863,24 +769,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -1062,24 +955,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -1490,24 +1370,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -1874,24 +1741,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -2112,24 +1966,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"url": {
@@ -2176,14 +2017,12 @@
 								},
 								{
 									"key": "orig_recipient_number",
-									"value": null,
-									"type": "text",
+									"value": "",
 									"disabled": true
 								},
 								{
 									"key": "recipient_number_source",
 									"value": "address_book",
-									"type": "text",
 									"disabled": true
 								}
 							],
@@ -2428,9 +2267,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "noauth"
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -2440,16 +2276,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"body": {
@@ -2604,16 +2430,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
 						"body": {
@@ -2764,14 +2580,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -2801,7 +2609,6 @@
 							],
 							"variable": [
 								{
-									"id": "9ca7d709-a5a6-469c-8cc5-fb384663641d",
 									"key": "id",
 									"value": "ADIDAS_US_5_EGIFT",
 									"description": "(Required) offer ID"
@@ -3032,16 +2839,7 @@
 					},
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n  \"recipient_country\": \"US\",\n  \"egift_request\": {\n    \"handle_id\": \"2100012838\",\n    \"offer_id\": \"ADIDAS_US_25_EGIFT\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"+12014380063\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": null\n}",
@@ -3158,10 +2956,6 @@
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}"
 							}
 						],
 						"url": {
@@ -3177,7 +2971,6 @@
 							],
 							"variable": [
 								{
-									"id": "e3b9708b-4d8b-4eaa-a4bb-fb231a4bb187",
 									"key": "id",
 									"value": "{{purchase_id}}"
 								}
@@ -3315,6 +3108,12 @@
 			"id": "a2d57feb-a400-4018-af6c-a622b053d3cd"
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{apiKey}}"
+		}
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -3339,31 +3138,39 @@
 	],
 	"variable": [
 		{
+			"id": "feb8a747-88df-44f5-abed-87c9250fa0da",
 			"key": "phoneNumber",
-			"value": "+18159425790",
-			"type": "string"
+			"value": "+18159425790"
 		},
 		{
+			"id": "bce0a30f-9ef9-4f96-8e67-114a56e91aa7",
 			"key": "recipient_number",
-			"value": "+14323887460",
-			"type": "string"
+			"value": "+14323887460"
 		},
 		{
+			"id": "7bdf13c6-0b8d-4fe7-a82a-b3ec1af5b016",
 			"key": "access_token",
 			"value": ""
 		},
 		{
+			"id": "4418999f-6da3-4012-bf95-9fd2f7773a40",
 			"key": "profile_id",
 			"value": ""
 		},
 		{
+			"id": "661fe1ae-bdc9-4238-bc65-3baaf0602733",
 			"key": "sa",
 			"value": "",
-			"type": "string",
 			"disabled": true
 		},
 		{
+			"id": "6324b5b9-036f-4103-8782-aa257cf79fd5",
 			"key": "baseUrl",
+			"value": ""
+		},
+		{
+			"id": "a0b707f0-7ba0-4207-bd53-27535f3e8b22",
+			"key": "apiKey",
 			"value": ""
 		}
 	]
