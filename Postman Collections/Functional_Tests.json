@@ -6660,17 +6660,18 @@
 		{
 			"listen": "prerequest",
 			"script": {
+				"id": "e4f73264-bda7-4b35-9b69-023bd16d3b30",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
 					"pm.collectionVariables.set(\"responseTimeSec\", 2);"
-				],
-				"id": "08c23e4c-352c-4f4b-b919-fb02845b838e"
+				]
 			}
 		},
 		{
 			"listen": "test",
 			"script": {
+				"id": "59127a84-ab38-4b21-8a3b-cc938669180b",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -6678,79 +6679,64 @@
 					"pm.test(\"Response time is less than \" + timeInSec + \" seconds.\", function () {",
 					"    pm.expect(pm.response.responseTime).to.be.below(timeInSec * 1000);",
 					"});"
-				],
-				"id": "4ec1082d-d002-4504-a328-f5718ea91aab"
+				]
 			}
 		}
 	],
 	"variable": [
 		{
-			"id": "a7706461-318e-4749-bca9-52aaf5c30b9c",
 			"key": "baseUrl",
 			"value": ""
 		},
 		{
-			"id": "d79080f3-fdff-49b8-8dc3-493dd193aeac",
 			"key": "phoneNumber",
 			"value": "+12014380063"
 		},
 		{
-			"id": "3e20609e-c5d1-4e80-beef-aed1681404ae",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "9f45c4f4-cb93-423c-af55-7175bb6c48b8",
 			"key": "responseTimeSec",
 			"value": ""
 		},
 		{
-			"id": "2de1dfd4-aaf3-4419-be4a-d04508a3c009",
 			"key": "baseHost",
 			"value": "https://api-dev.idtm.io"
 		},
 		{
-			"id": "c4347ddd-6e2b-45d2-bf6a-247b81f7a1b7",
 			"key": "application_id",
 			"value": "ef1e0c26e93b3983ce59eddd3992c942"
 		},
 		{
-			"id": "564ecf6f-dc8e-4280-bf79-2c08c12237b5",
 			"key": "mtu_purchase_id",
 			"value": ""
 		},
 		{
-			"id": "47de558d-664b-479c-86ab-d1a9588ac667",
 			"key": "mtu_promo_purchase_id",
 			"value": ""
 		},
 		{
-			"id": "bb77a67e-90c1-47df-bac5-7e1d85d0976b",
 			"key": "egift_purchase_id",
 			"value": ""
 		},
 		{
-			"id": "16f85543-cb95-404b-9599-eb35bcce7e14",
 			"key": "egift_promo_purchase_id",
 			"value": ""
 		},
 		{
-			"id": "08d95f54-adc9-4bdd-a95d-836054fa4972",
 			"key": "recipient_msisdn",
 			"value": "+12014380063"
 		},
 		{
-			"id": "90653f25-5727-4acd-8155-340489fc2759",
 			"key": "mtu_offer_id",
 			"value": "ATT_US_15"
 		},
 		{
-			"id": "1555666d-3c1c-40a5-b32e-c400eaa18ece",
 			"key": "egift_offer_id",
 			"value": "AMAZON_001"
 		},
 		{
-			"id": "72ac375b-6975-4b2c-9ec5-918418c52749",
 			"key": "handle_id",
 			"value": "2100012838"
 		}
