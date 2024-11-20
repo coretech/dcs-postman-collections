@@ -1916,24 +1916,24 @@
 				{
 					"listen": "prerequest",
 					"script": {
+						"id": "8ba83f03-3e7d-452b-a529-c933576c84ca",
 						"type": "text/javascript",
 						"packages": {},
 						"exec": [
-							""
-						],
-						"id": "73a3a984-e3cd-476e-a367-254a0c9817b1"
+							"pm.collectionVariables.set(\"baseUrl\", pm.collectionVariables.get(\"baseHost\") + \"/mtu\");"
+						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
+						"id": "d06d3f43-e002-44db-87f3-0e0b16a2085c",
 						"type": "text/javascript",
 						"packages": {},
 						"exec": [
 							"pm.collectionVariables.set(\"baseUrl\", pm.collectionVariables.get(\"baseHost\") + \"/mtu\");",
 							""
-						],
-						"id": "c8cd14e2-a4ef-4b4e-a38b-7417e4c34b43"
+						]
 					}
 				}
 			]
