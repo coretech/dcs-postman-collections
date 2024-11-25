@@ -3251,37 +3251,30 @@
 	],
 	"variable": [
 		{
-			"id": "bde8d68e-2d9a-4d00-9efb-e815388d4e3b",
 			"key": "phoneNumber",
 			"value": "+19185551126"
 		},
 		{
-			"id": "64cf30dd-3dd9-4f51-b1ba-56db2a5a5a08",
 			"key": "recipient_number",
 			"value": "+14323887460"
 		},
 		{
-			"id": "98259faf-a7c1-4d08-8044-efa3accca8f7",
 			"key": "access_token",
 			"value": ""
 		},
 		{
-			"id": "a45bec66-b437-4acd-af39-a79f111917d9",
 			"key": "profile_id",
 			"value": ""
 		},
 		{
-			"id": "fed17b8a-5d50-4731-be5d-102163f1466a",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "544328ed-5c4b-4218-8882-c61bf1d03ff7",
 			"key": "application_id",
 			"value": "ef1e0c26e93b3983ce59eddd3992c942"
 		},
 		{
-			"id": "e86806a0-6fe9-43bd-b059-7164c817ab31",
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io"
 		}
