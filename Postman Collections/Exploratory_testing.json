@@ -118,45 +118,64 @@
 						"description": "Generated from cURL: curl --location --request PUT 'https://api-dev.idtm.io/auth/v1/sms/signup' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'content-type: application/json; charset=utf-8' \\\n--header 'accept: application/json' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 106' \\\n--header 'host: api-dev.idtm.io' \\\n--data-raw '{\"application_id\":\"ef1e0c26e93b3983ce59eddd3992c942\",\"msisdn\":\"+14135519762\",\"verification_code\":\"999999\"}'"
 					},
 					"response": []
-				},
+				}
+			],
+			"id": "f87d45db-2d0c-421f-b040-f92a00fe3f9a",
+			"description": "This folder sets up the resources needed for the test folders later in the collection:\n\n1. **Generate new API key** - Generates a new API key for use in the collection and saves the value as a collection variable, authorizing all following requests.\n2. **Create** **`fromAccount`** - This account is created to test the results of a transaction. Saves the accountId as a collection variable, named as `fromAccountId`. This account will send funds in a transfer.\n3. **Create** **`toAccount`** - Creates a new account that we will use in the `Account Tests` folder. Saves the accountId as a collection variable, named as `toAccountId`. This account will receive a transfer of funds.\n4. **Transfer 500 coins to \"to\" account** - Transfer 500 coins from the `fromAccount` to the `toAccount`."
+		},
+		{
+			"name": "logout",
+			"item": [
 				{
-					"name": "Logout user from the system and invalidate existing session",
-					"id": "d49289a8-8047-4003-bd3b-2d3cdb36b6e7",
+					"name": "[DEV with VPN] Logout user from all sessions",
+					"id": "12535efa-a24f-4481-8fc5-9af25c419f2c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "DELETE",
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
 								"value": "*/*"
-							},
-							{
-								"key": "x-profile-id",
-								"value": "{{profile_id}}",
-								"type": "text"
-							},
-							{
-								"key": "authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
 							}
 						],
-						"url": "{{baseUrl}}/auth/v1/session",
+						"url": {
+							"raw": "https://hdm-profile-server-int-private.jefe-dev.idtm.io/account/logoutallsessions?user_id={{profile_id}}",
+							"protocol": "https",
+							"host": [
+								"hdm-profile-server-int-private",
+								"jefe-dev",
+								"idtm",
+								"io"
+							],
+							"path": [
+								"account",
+								"logoutallsessions"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{profile_id}}"
+								}
+							]
+						},
 						"description": "Provide an existing access token to logout user."
 					},
 					"response": [
 						{
-							"id": "1a7b02a9-7b7d-450d-9f39-2bbfd7e04082",
+							"id": "de33b6a5-7d73-47bd-83d8-b6fdf92bbd28",
 							"name": "OK",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
 									{
-										"description": "Added as a part of security scheme: apikey",
 										"key": "Authorization",
-										"value": "<API Key>"
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
 									}
 								],
 								"url": "{{baseUrl}}/v1/session"
@@ -164,13 +183,13 @@
 							"status": "OK",
 							"code": 200,
 							"_postman_previewlanguage": "text",
-							"header": [],
+							"header": null,
 							"cookie": [],
 							"responseTime": null,
-							"body": ""
+							"body": null
 						},
 						{
-							"id": "918d6d0b-8077-43b2-b812-18fe59cd1258",
+							"id": "01f68848-a424-4aaa-974d-ef62e4cf6b0c",
 							"name": "Bad Request",
 							"originalRequest": {
 								"method": "DELETE",
@@ -180,9 +199,9 @@
 										"value": "*/*"
 									},
 									{
-										"description": "Added as a part of security scheme: apikey",
 										"key": "Authorization",
-										"value": "<API Key>"
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
 									}
 								],
 								"url": "{{baseUrl}}/v1/session"
@@ -201,15 +220,15 @@
 							"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"laborum602\": 69364704.1584886,\n    \"minim__cb\": \"quis laborum ad\"\n  },\n  \"txid\": \"<string>\"\n}"
 						},
 						{
-							"id": "560ae50a-91e9-484a-bc7e-cdc7545ee498",
+							"id": "47553336-bf33-4c14-bf41-a2ec1e27aa05",
 							"name": "Invalid access token",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [
 									{
-										"description": "Added as a part of security scheme: apikey",
 										"key": "Authorization",
-										"value": "<API Key>"
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
 									}
 								],
 								"url": "{{baseUrl}}/v1/session"
@@ -217,16 +236,110 @@
 							"status": "Unauthorized",
 							"code": 401,
 							"_postman_previewlanguage": "text",
-							"header": [],
+							"header": null,
 							"cookie": [],
 							"responseTime": null,
-							"body": ""
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Logout user from the system and invalidate existing session",
+					"id": "1d97fec1-0da0-40f9-a719-d6ab3f909a4d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": "{{baseUrl}}/auth/v1/session",
+						"description": "Provide an existing access token to logout user."
+					},
+					"response": [
+						{
+							"id": "5e1f48c9-e10a-4fa7-8dde-4e87f4efe6da",
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/v1/session"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						},
+						{
+							"id": "0bd63ba2-34bf-4ef6-b321-b4c213274d49",
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Authorization",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/v1/session"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error_code\": \"<integer>\",\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"laborum602\": 69364704.1584886,\n    \"minim__cb\": \"quis laborum ad\"\n  },\n  \"txid\": \"<string>\"\n}"
+						},
+						{
+							"id": "c968afd2-2da4-4986-9132-a2fe1de173dd",
+							"name": "Invalid access token",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "<API Key>",
+										"description": "Added as a part of security scheme: apikey"
+									}
+								],
+								"url": "{{baseUrl}}/v1/session"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": null
 						}
 					]
 				}
 			],
-			"id": "f87d45db-2d0c-421f-b040-f92a00fe3f9a",
-			"description": "This folder sets up the resources needed for the test folders later in the collection:\n\n1. **Generate new API key** - Generates a new API key for use in the collection and saves the value as a collection variable, authorizing all following requests.\n2. **Create** **`fromAccount`** - This account is created to test the results of a transaction. Saves the accountId as a collection variable, named as `fromAccountId`. This account will send funds in a transfer.\n3. **Create** **`toAccount`** - Creates a new account that we will use in the `Account Tests` folder. Saves the accountId as a collection variable, named as `toAccountId`. This account will receive a transfer of funds.\n4. **Transfer 500 coins to \"to\" account** - Transfer 500 coins from the `fromAccount` to the `toAccount`."
+			"id": "45a2c226-7d7f-4f45-9caa-ea15b751737e"
 		},
 		{
 			"name": "cards",
@@ -3138,34 +3251,39 @@
 	],
 	"variable": [
 		{
+			"id": "bde8d68e-2d9a-4d00-9efb-e815388d4e3b",
 			"key": "phoneNumber",
-			"value": "+18159425790"
+			"value": "+19185551126"
 		},
 		{
+			"id": "64cf30dd-3dd9-4f51-b1ba-56db2a5a5a08",
 			"key": "recipient_number",
 			"value": "+14323887460"
 		},
 		{
+			"id": "98259faf-a7c1-4d08-8044-efa3accca8f7",
 			"key": "access_token",
 			"value": ""
 		},
 		{
+			"id": "a45bec66-b437-4acd-af39-a79f111917d9",
 			"key": "profile_id",
 			"value": ""
 		},
 		{
+			"id": "fed17b8a-5d50-4731-be5d-102163f1466a",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
+			"id": "544328ed-5c4b-4218-8882-c61bf1d03ff7",
 			"key": "application_id",
-			"value": "ef1e0c26e93b3983ce59eddd3992c942",
-			"type": "string"
+			"value": "ef1e0c26e93b3983ce59eddd3992c942"
 		},
 		{
+			"id": "e86806a0-6fe9-43bd-b059-7164c817ab31",
 			"key": "baseUrl",
-			"value": "https://api-dev.idtm.io",
-			"type": "string"
+			"value": "https://api-dev.idtm.io"
 		}
 	]
 }
