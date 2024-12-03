@@ -491,6 +491,37 @@
 						"description": "Generated from cURL: curl --location --request PUT 'https://api-dev.idtm.io/profile/v1/creditcards/2100012838/default' \\\n--header 'user-agent: io.idtm.koala.internal/1.24.0-1.24.0 iOS/18.1' \\\n--header 'accept: application/json' \\\n--header 'x-profile-id: e2yg8wki9jbk' \\\n--header 'accept-encoding: gzip' \\\n--header 'content-length: 2' \\\n--header 'host: api-dev.idtm.io' \\\n--header 'authorization: Bearer cXjI.GwO7jjbPaYdtJWZZ6cw9nEtEbNsJjhms4MtYApSVk_SEFU4NpTjRylq6DOrfpT2h_q_BzbHrw7DMk_UJ_LUo_bu.GkjeU5sgJ9PoINCL9JOGp2a1dOiv7bE15ia' \\\n--header 'content-type: application/json; charset=utf-8' \\\n--data-raw '{}'"
 					},
 					"response": []
+				},
+				{
+					"name": "Delete card",
+					"id": "e01cadfe-e222-4e48-b7e3-5adb50ba8816",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/profile/v1/creditcards/:handle_id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"v1",
+								"creditcards",
+								":handle_id"
+							],
+							"variable": [
+								{
+									"id": "2a217725-0d96-405e-96b6-957b7add17e7",
+									"key": "handle_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "8d19c712-2d3c-49df-bc3b-118490bb0375"
