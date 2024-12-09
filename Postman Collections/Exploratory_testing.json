@@ -432,7 +432,8 @@
 							"script": {
 								"id": "03e14afc-6ef4-452b-8185-332c086e0641",
 								"exec": [
-									""
+									"let response = pm.response.json()",
+									"pm.collectionVariables.set('handle_id', response[0].handle_id)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -514,9 +515,8 @@
 							],
 							"variable": [
 								{
-									"id": "2a217725-0d96-405e-96b6-957b7add17e7",
 									"key": "handle_id",
-									"value": ""
+									"value": "{{handle_id}}"
 								}
 							]
 						}
@@ -1107,7 +1107,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/mtu/v1/transactions?limit=50&all_transactions=true&include_carrier_promos=true",
+							"raw": "{{baseUrl}}/mtu/v1/transactions?limit=50&product_type=voucher&all_transactions=true&include_carrier_promos=true",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1142,9 +1142,8 @@
 								},
 								{
 									"key": "product_type",
-									"value": "<string>",
-									"description": "mtu or voucher, nil for mtu",
-									"disabled": true
+									"value": "voucher",
+									"description": "mtu or voucher, nil for mtu"
 								},
 								{
 									"key": "successful_only",
@@ -2727,7 +2726,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/store/v1/offers/egift/:id?recipient_country=US",
+							"raw": "{{baseUrl}}/store/v1/offers/egift/:id?recipient_country={{country_code}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -2741,7 +2740,7 @@
 							"query": [
 								{
 									"key": "recipient_country",
-									"value": "US",
+									"value": "{{country_code}}",
 									"description": "(Required) Recipient msisdn"
 								},
 								{
@@ -2754,7 +2753,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "ADIDAS_US_5_EGIFT",
+									"value": "{{egift_offer_id}}",
 									"description": "(Required) offer ID"
 								}
 							]
@@ -2986,7 +2985,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"recipient_country\": \"US\",\n  \"egift_request\": {\n    \"handle_id\": \"2100012838\",\n    \"offer_id\": \"ADIDAS_US_25_EGIFT\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"+12014380063\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"billing_account_id\": \"<string>\",\n    //   \"billing_invoice_number\": \"<string>\",\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n      \"recipient_first_name\",\n      \"recipient_last_name\",\n      \"recipient_msisdn\",\n      \"sender_first_name\",\n      \"sender_last_name\"\n    ],\n    \"orig_recipient_number\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": null\n}",
+							"raw": "{\n  \"recipient_country\": \"{{country_code}}\",\n  \"egift_request\": {\n    \"handle_id\": \"{{handle_id}}\",\n    \"offer_id\": \"{{egift_offer_id}}\",\n    \"offer_price_in_cents\": 550,\n    \"recipient_msisdn\": \"{{receipient_msisdn}}\",\n    \"cvv\": 999,\n    \"extra_fields\": {\n    //   \"delivery_challenge_answer\": \"<string>\",\n    //   \"delivery_challenge_question\": \"<string>\",\n    //   \"delivery_date\": \"<string>\",\n    //   \"delivery_message\": \"<string>\",\n      \"billing_account_id\": \"{{$randomUUID}}\",\n      \"recipient_first_name\": \"FirstName\",\n      \"recipient_last_name\": \"LastName\",\n      \"recipient_msisdn\": \"{{receipient_msisdn}}\",\n      \"sender_first_name\": \"Api\",\n      \"sender_last_name\": \"Tests\",\n      \"sender_msisdn\": \"{{phoneNumber}}\",\n      \"recipient_email\": \"{{$randomEmail}}\"\n    },\n    \"installation_id\": null,\n    \"launch_at\": null,\n    \"offer_required_fields\": [\n        \"billing_account_id\",\n        \"recipient_first_name\",\n        \"recipient_last_name\",\n        \"recipient_msisdn\",\n        \"sender_first_name\",\n        \"sender_last_name\",\n        \"sender_msisdn\",\n        \"recipient_email\"\n\n    ],\n    \"orig_recipient_number\": null,\n    \"recipient_number_source\": null,\n    \"recurrent_interval\": null,\n    \"recurrent_unit\": null,\n    \"reminder_interval\": null,\n    \"reminder_unit\": null,\n    \"request_id\": null,\n    \"return_url\": \"https://bossrevolution.com\"\n  },\n  \"promo_id\": null\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3247,6 +3246,363 @@
 							"body": "{}"
 						}
 					]
+				},
+				{
+					"name": "Get list of promotions [v1/promos]",
+					"id": "55dcf822-58ac-4f88-abf8-2b1ba09eec0f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/store/v1/promos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"store",
+								"v1",
+								"promos"
+							],
+							"query": [
+								{
+									"key": "calling_plan_id",
+									"value": "<string>",
+									"description": "find promos for the specific calling plan",
+									"disabled": true
+								},
+								{
+									"key": "installation_id",
+									"value": "<string>",
+									"description": "installation id",
+									"disabled": true
+								},
+								{
+									"key": "mtu_product_id",
+									"value": "<string>",
+									"description": "find promos for the specific mtu offer",
+									"disabled": true
+								},
+								{
+									"key": "destination_countries",
+									"value": "<string>",
+									"description": "csv of ISO country codes to find promos for the given destination countries",
+									"disabled": true
+								},
+								{
+									"key": "product_types",
+									"value": "<string>",
+									"description": "csv of product types (mtu, calling_plan) to find promos that contain the given type products",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Calling this endpoint will return a list of of promotions that match the request."
+					},
+					"response": [
+						{
+							"id": "3fc2b8f8-e529-44a6-9257-f8a37028bbca",
+							"name": "List of promos",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/promos?calling_plan_id=<string>&installation_id=<string>&mtu_product_id=<string>&destination_countries=<string>&product_types=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"promos"
+									],
+									"query": [
+										{
+											"key": "calling_plan_id",
+											"value": "<string>",
+											"description": "find promos for the specific calling plan"
+										},
+										{
+											"key": "installation_id",
+											"value": "<string>",
+											"description": "installation id"
+										},
+										{
+											"key": "mtu_product_id",
+											"value": "<string>",
+											"description": "find promos for the specific mtu offer"
+										},
+										{
+											"key": "destination_countries",
+											"value": "<string>",
+											"description": "csv of ISO country codes to find promos for the given destination countries"
+										},
+										{
+											"key": "product_types",
+											"value": "<string>",
+											"description": "csv of product types (mtu, calling_plan) to find promos that contain the given type products"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"promos\": [\n    {\n      \"automatic_promo_description\": \"<string>\",\n      \"base_price\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"destination_countries\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"discount\": \"<string>\",\n      \"discount_percentage\": \"<string>\",\n      \"discounted_price\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"fees\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"meta_data\": {\n        \"ea5_\": -40237288.88499347,\n        \"eiusmod__\": 65974415\n      },\n      \"original_price\": \"<string>\",\n      \"price\": \"<string>\",\n      \"products\": [\n        {\n          \"base_price\": \"<string>\",\n          \"carrier\": {\n            \"code\": \"<string>\",\n            \"display_name\": \"<string>\",\n            \"image_url\": \"<string>\"\n          },\n          \"currency_code\": \"<string>\",\n          \"description\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"discountAlreadyInPrice\": \"<boolean>\",\n          \"discounted_price\": \"<string>\",\n          \"fees\": \"<string>\",\n          \"fraud_rules\": {\n            \"cvv_always_required\": \"<boolean>\",\n            \"cvv_required_max_limit\": {\n              \"amount\": \"<string>\",\n              \"currency\": \"<string>\"\n            }\n          },\n          \"image_url\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"product_id\": \"<string>\",\n          \"title\": \"<string>\",\n          \"type\": \"imtu\"\n        },\n        {\n          \"base_price\": \"<string>\",\n          \"carrier\": {\n            \"code\": \"<string>\",\n            \"display_name\": \"<string>\",\n            \"image_url\": \"<string>\"\n          },\n          \"currency_code\": \"<string>\",\n          \"description\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"discountAlreadyInPrice\": \"<boolean>\",\n          \"discounted_price\": \"<string>\",\n          \"fees\": \"<string>\",\n          \"fraud_rules\": {\n            \"cvv_always_required\": \"<boolean>\",\n            \"cvv_required_max_limit\": {\n              \"amount\": \"<string>\",\n              \"currency\": \"<string>\"\n            }\n          },\n          \"image_url\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"product_id\": \"<string>\",\n          \"title\": \"<string>\",\n          \"type\": \"calling_plan\"\n        }\n      ],\n      \"promo_id\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"static_promo_description\": \"<string>\",\n      \"tagline\": \"<string>\",\n      \"type\": \"automatic_promo\"\n    },\n    {\n      \"automatic_promo_description\": \"<string>\",\n      \"base_price\": \"<string>\",\n      \"currency_code\": \"<string>\",\n      \"destination_countries\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"discount\": \"<string>\",\n      \"discount_percentage\": \"<string>\",\n      \"discounted_price\": \"<string>\",\n      \"end_at\": \"<integer>\",\n      \"fees\": \"<string>\",\n      \"image_url\": \"<string>\",\n      \"meta_data\": {\n        \"commodo9d\": \"do\",\n        \"cillum3a7\": -58432819.6592272\n      },\n      \"original_price\": \"<string>\",\n      \"price\": \"<string>\",\n      \"products\": [\n        {\n          \"base_price\": \"<string>\",\n          \"carrier\": {\n            \"code\": \"<string>\",\n            \"display_name\": \"<string>\",\n            \"image_url\": \"<string>\"\n          },\n          \"currency_code\": \"<string>\",\n          \"description\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"discountAlreadyInPrice\": \"<boolean>\",\n          \"discounted_price\": \"<string>\",\n          \"fees\": \"<string>\",\n          \"fraud_rules\": {\n            \"cvv_always_required\": \"<boolean>\",\n            \"cvv_required_max_limit\": {\n              \"amount\": \"<string>\",\n              \"currency\": \"<string>\"\n            }\n          },\n          \"image_url\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"product_id\": \"<string>\",\n          \"title\": \"<string>\",\n          \"type\": \"imtu\"\n        },\n        {\n          \"base_price\": \"<string>\",\n          \"carrier\": {\n            \"code\": \"<string>\",\n            \"display_name\": \"<string>\",\n            \"image_url\": \"<string>\"\n          },\n          \"currency_code\": \"<string>\",\n          \"description\": \"<string>\",\n          \"discount\": \"<string>\",\n          \"discountAlreadyInPrice\": \"<boolean>\",\n          \"discounted_price\": \"<string>\",\n          \"fees\": \"<string>\",\n          \"fraud_rules\": {\n            \"cvv_always_required\": \"<boolean>\",\n            \"cvv_required_max_limit\": {\n              \"amount\": \"<string>\",\n              \"currency\": \"<string>\"\n            }\n          },\n          \"image_url\": \"<string>\",\n          \"original_price\": \"<string>\",\n          \"price\": \"<string>\",\n          \"product_id\": \"<string>\",\n          \"title\": \"<string>\",\n          \"type\": \"egift\"\n        }\n      ],\n      \"promo_id\": \"<string>\",\n      \"start_at\": \"<integer>\",\n      \"static_promo_description\": \"<string>\",\n      \"tagline\": \"<string>\",\n      \"type\": \"static_promo\"\n    }\n  ]\n}"
+						},
+						{
+							"id": "68acf1a7-6068-4833-b080-17ad214d32a3",
+							"name": "Missing or invalid required params",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/promos?calling_plan_id=<string>&installation_id=<string>&mtu_product_id=<string>&destination_countries=<string>&product_types=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"promos"
+									],
+									"query": [
+										{
+											"key": "calling_plan_id",
+											"value": "<string>",
+											"description": "find promos for the specific calling plan"
+										},
+										{
+											"key": "installation_id",
+											"value": "<string>",
+											"description": "installation id"
+										},
+										{
+											"key": "mtu_product_id",
+											"value": "<string>",
+											"description": "find promos for the specific mtu offer"
+										},
+										{
+											"key": "destination_countries",
+											"value": "<string>",
+											"description": "csv of ISO country codes to find promos for the given destination countries"
+										},
+										{
+											"key": "product_types",
+											"value": "<string>",
+											"description": "csv of product types (mtu, calling_plan) to find promos that contain the given type products"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n  \"error_code\": 36,\n  \"http_code\": \"<integer>\",\n  \"message\": \"<string>\",\n  \"name\": \"<string>\",\n  \"payload\": {\n    \"proident40\": -25268664.999438643,\n    \"commodoa\": true\n  },\n  \"txid\": \"<string>\"\n}"
+						},
+						{
+							"id": "41c4a5d8-0f12-45dd-9f00-eb13ba024820",
+							"name": "Invalid access token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "*/*"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/promos?calling_plan_id=<string>&installation_id=<string>&mtu_product_id=<string>&destination_countries=<string>&product_types=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"promos"
+									],
+									"query": [
+										{
+											"key": "calling_plan_id",
+											"value": "<string>",
+											"description": "find promos for the specific calling plan"
+										},
+										{
+											"key": "installation_id",
+											"value": "<string>",
+											"description": "installation id"
+										},
+										{
+											"key": "mtu_product_id",
+											"value": "<string>",
+											"description": "find promos for the specific mtu offer"
+										},
+										{
+											"key": "destination_countries",
+											"value": "<string>",
+											"description": "csv of ISO country codes to find promos for the given destination countries"
+										},
+										{
+											"key": "product_types",
+											"value": "<string>",
+											"description": "csv of product types (mtu, calling_plan) to find promos that contain the given type products"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Get egift products [v1/offers/voucher]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "754023b6-8ae7-4f9c-b4bb-fab09bd1d506",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"categories are present\", function () {",
+									"var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.collections[0].categories).is.exist.and.is.not.empty",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "bcdb4463-4bf1-4348-a59d-6600e11d6499",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/store/v1/offers/voucher?provider_code=GooglePlay&recipient_msisdn={{recipient_number}}&recipient_country=US",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"store",
+								"v1",
+								"offers",
+								"voucher"
+							],
+							"query": [
+								{
+									"key": "parent_category_codes",
+									"value": "<string>",
+									"description": "list of parent categories",
+									"disabled": true
+								},
+								{
+									"key": "category_code",
+									"value": "Gift Card",
+									"description": "Current category code",
+									"disabled": true
+								},
+								{
+									"key": "provider_code",
+									"value": "GooglePlay",
+									"description": "Provider code"
+								},
+								{
+									"key": "recipient_msisdn",
+									"value": "{{recipient_number}}",
+									"description": "Recipient msisdn is required if recipient_country is missing"
+								},
+								{
+									"key": "recipient_country",
+									"value": "US",
+									"description": "Recipient country is required if recipient_msisdn is missing"
+								},
+								{
+									"key": "orig_recipient_number",
+									"value": "<string>",
+									"description": "Original recipient msisdn",
+									"disabled": true
+								},
+								{
+									"key": "search_query",
+									"value": "<string>",
+									"description": "Search query for brands or categories",
+									"disabled": true
+								},
+								{
+									"key": "search_offset",
+									"value": "<string>",
+									"description": "Search offset for pagination",
+									"disabled": true
+								},
+								{
+									"key": "search_limit",
+									"value": "<string>",
+									"description": "Search limit for pagination",
+									"disabled": true
+								},
+								{
+									"key": "search_count",
+									"value": "<string>",
+									"description": "Total number of results",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get available egift products"
+					},
+					"response": []
 				}
 			],
 			"id": "a2d57feb-a400-4018-af6c-a622b053d3cd"
@@ -3282,32 +3638,64 @@
 	],
 	"variable": [
 		{
+			"id": "e404fa5b-adb4-4f78-a675-70606a3fc917",
 			"key": "phoneNumber",
 			"value": "+19185551126"
 		},
 		{
+			"id": "b505aa00-90be-4161-b672-a5ae3bab9da2",
 			"key": "recipient_number",
-			"value": "+14323887460"
+			"value": "+19185551126"
 		},
 		{
+			"id": "e314b194-a003-4328-9b27-999391440c3f",
 			"key": "access_token",
 			"value": ""
 		},
 		{
+			"id": "fc32a0b7-1bba-493d-a98e-d9363938704a",
 			"key": "profile_id",
 			"value": ""
 		},
 		{
+			"id": "d2a74fb5-5f6c-4982-8182-0767f85ff56c",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
+			"id": "a3c81e65-5b09-4ea6-aaf2-ac7f7c3de3d9",
 			"key": "application_id",
 			"value": "ef1e0c26e93b3983ce59eddd3992c942"
 		},
 		{
+			"id": "e48252a7-2308-4262-b96e-0f09742edb82",
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io"
+		},
+		{
+			"id": "462ffe6a-c3e5-4971-9c0d-6d09069d9ff0",
+			"key": "handle_id",
+			"value": ""
+		},
+		{
+			"id": "cfd756f8-a41c-48b8-8472-a8babf771976",
+			"key": "purchase_id",
+			"value": ""
+		},
+		{
+			"id": "2e0573dd-80f6-4a94-b9a7-7818682dacbd",
+			"key": "egift_offer_id",
+			"value": ""
+		},
+		{
+			"id": "34e4af8b-9e78-4700-8199-d9b67c8e3247",
+			"key": "country_code",
+			"value": "US"
+		},
+		{
+			"id": "35e58cd2-4ef4-4201-b701-01d0d0238dad",
+			"key": "receipient_msisdn",
+			"value": "{{{{country_code}}_RECIPIENT}}"
 		}
 	]
 }
