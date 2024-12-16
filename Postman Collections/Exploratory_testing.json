@@ -3668,6 +3668,10 @@
 		{
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io"
+		},
+		{
+			"key": "handle_id",
+			"value": ""
 		}
 	]
 }
