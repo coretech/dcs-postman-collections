@@ -1107,7 +1107,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/mtu/v1/transactions?limit=50&product_type=voucher&all_transactions=true&include_carrier_promos=true",
+							"raw": "{{baseUrl}}/mtu/v1/transactions",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1126,7 +1126,8 @@
 								{
 									"key": "limit",
 									"value": "50",
-									"description": "limit"
+									"description": "limit",
+									"disabled": true
 								},
 								{
 									"key": "timer_id",
@@ -1143,7 +1144,8 @@
 								{
 									"key": "product_type",
 									"value": "voucher",
-									"description": "mtu or voucher, nil for mtu"
+									"description": "mtu or voucher, nil for mtu",
+									"disabled": true
 								},
 								{
 									"key": "successful_only",
@@ -1154,7 +1156,8 @@
 								{
 									"key": "all_transactions",
 									"value": "true",
-									"description": "to query all transactions, default false does not return early failed and provider-queued txes"
+									"description": "to query all transactions, default false does not return early failed and provider-queued txes",
+									"disabled": true
 								},
 								{
 									"key": "before",
@@ -1164,7 +1167,8 @@
 								},
 								{
 									"key": "include_carrier_promos",
-									"value": "true"
+									"value": "true",
+									"disabled": true
 								}
 							]
 						}
