@@ -3638,64 +3638,32 @@
 	],
 	"variable": [
 		{
-			"id": "e404fa5b-adb4-4f78-a675-70606a3fc917",
 			"key": "phoneNumber",
 			"value": "+19185551126"
 		},
 		{
-			"id": "b505aa00-90be-4161-b672-a5ae3bab9da2",
 			"key": "recipient_number",
 			"value": "+19185551126"
 		},
 		{
-			"id": "e314b194-a003-4328-9b27-999391440c3f",
 			"key": "access_token",
 			"value": ""
 		},
 		{
-			"id": "fc32a0b7-1bba-493d-a98e-d9363938704a",
 			"key": "profile_id",
 			"value": ""
 		},
 		{
-			"id": "d2a74fb5-5f6c-4982-8182-0767f85ff56c",
 			"key": "apiKey",
 			"value": ""
 		},
 		{
-			"id": "a3c81e65-5b09-4ea6-aaf2-ac7f7c3de3d9",
 			"key": "application_id",
 			"value": "ef1e0c26e93b3983ce59eddd3992c942"
 		},
 		{
-			"id": "e48252a7-2308-4262-b96e-0f09742edb82",
 			"key": "baseUrl",
 			"value": "https://api-dev.idtm.io"
-		},
-		{
-			"id": "462ffe6a-c3e5-4971-9c0d-6d09069d9ff0",
-			"key": "handle_id",
-			"value": ""
-		},
-		{
-			"id": "cfd756f8-a41c-48b8-8472-a8babf771976",
-			"key": "purchase_id",
-			"value": ""
-		},
-		{
-			"id": "2e0573dd-80f6-4a94-b9a7-7818682dacbd",
-			"key": "egift_offer_id",
-			"value": ""
-		},
-		{
-			"id": "34e4af8b-9e78-4700-8199-d9b67c8e3247",
-			"key": "country_code",
-			"value": "US"
-		},
-		{
-			"id": "35e58cd2-4ef4-4201-b701-01d0d0238dad",
-			"key": "receipient_msisdn",
-			"value": "{{{{country_code}}_RECIPIENT}}"
 		}
 	]
 }
